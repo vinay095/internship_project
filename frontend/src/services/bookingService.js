@@ -1,4 +1,4 @@
-import { bookings, generateId } from '../data/mockData';
+import { bookings, generateId } from '../data/mock_data';
 
 export const bookingService = {
 	getBookings: (filters = {}) => {

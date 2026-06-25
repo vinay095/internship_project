@@ -1,4 +1,4 @@
-import { rooms, generateId } from '../data/mockData';
+import { rooms, generateId } from '../data/mock_data';
 
 export const roomService = {
 	getRooms: (location = null) => {

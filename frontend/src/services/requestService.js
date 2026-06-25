@@ -1,4 +1,4 @@
-import { requests, bookings, generateId } from '../data/mockData';
+import { requests, bookings, generateId } from '../data/mock_data';
 
 export const requestService = {
 
