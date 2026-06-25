@@ -1,7 +1,7 @@
 
 // mock data, will be replaced by api calls
 
-export const LOCATIONS = ['NOIDA', 'HYDERABAD', 'KOLKATA']
+export const LOCATIONS = ['Noida', 'Hyderabad', 'Kolkata']
 
 export const TIME_SLOTS = ['9 AM - 10 AM', '10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM']
 
