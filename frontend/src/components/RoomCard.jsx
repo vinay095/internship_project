@@ -1,4 +1,4 @@
-//import './RoomCard.css';
+import './RoomCard.css';
 
 function RoomCard({ room, bookedSlots = [], onBook, onRequest, canBook }) {
   return (

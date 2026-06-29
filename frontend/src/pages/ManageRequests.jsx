@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { requestService } from '../services/requestService';
 import { roomService } from '../services/roomService';
 import { authService } from '../services/authService';
-//import './ManageRequests.css';
+import './ManageRequests.css';
 
 function ManageRequests() {
 	const { user } = useAuth();

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-//import './BookingModal.css';
+import './BookingModal.css';
 
 function InviteModal({ booking, onClose, onSend }) {
 	const [emails, setEmails] = useState('');
@@ -11,14 +11,14 @@ function InviteModal({ booking, onClose, onSend }) {
 		setError('');
 		setSuccess('');
 
-		const emailList = emails.split(',').map((e) => e.trim()).filter(Boolean);
+		const emailList = emails.split(',').map((email) => email.trim()).filter(Boolean);
 
 		if (emailList.length === 0) {
 			setError('Please enter at least one email address');
 			return;
 		}
 
-		const invalidEmails = emailList.filter((e) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e));
+		const invalidEmails = emailList.filter((email) => !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
 						// start with atleast 1 char, include `@`, min 1 char, `.`, atleast one char
 		if (invalidEmails.length > 0) {
 			setError(`Invalid emails: ${invalidEmails.join(', ')}`);

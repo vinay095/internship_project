@@ -1,0 +1,29 @@
+/* ==========================================================================
+   MANAGE ROOMS STYLES — ManageRooms.css
+   Used by: src/pages/ManageRooms.jsx
+   Contains: Room form card (add/edit room), page animation
+             Note: Table styles come from Bookings.css (.bookings-table)
+   ========================================================================== */
+
+.manage-rooms-page {
+  animation: fadeIn 0.35s ease;
+}
+
+/* ----- Add/Edit Room Form Card ----- */
+.room-form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 22px;
+  margin-bottom: 20px;
+  animation: slideUp 0.25s ease;
+}
+
+.room-form-card h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-color-subtle);
+}

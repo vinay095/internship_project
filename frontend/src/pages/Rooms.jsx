@@ -7,7 +7,7 @@ import { LOCATIONS } from '../data/mock_data';
 import RoomCard from '../components/RoomCard';
 import BookingModal from '../components/BookingModal';
 import RequestModal from '../components/RequestModal';
-//import './Rooms.css';
+import './Rooms.css';
 
 function Rooms() {
 	const { user, hasRole } = useAuth();

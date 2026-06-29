@@ -4,7 +4,7 @@ import { bookingService } from '../services/bookingService';
 import { roomService } from '../services/roomService';
 import { authService } from '../services/authService';
 import InviteModal from '../components/InviteModal';
-//import './Bookings.css';
+import './Bookings.css';
 
 function Bookings() {
 	const { user } = useAuth();

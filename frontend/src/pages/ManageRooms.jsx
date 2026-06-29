@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { roomService } from '../services/roomService';
 import { LOCATIONS } from '../data/mock_data';
-//import './ManageRooms.css';
+import './ManageRooms.css';
 
 function ManageRooms() {
 	const [message, setMessage] = useState('');

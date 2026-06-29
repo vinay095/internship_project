@@ -1,0 +1,27 @@
+/* ==========================================================================
+   LAYOUT STYLES — Layout.css
+   Used by: src/components/layout/Layout.jsx
+   Contains: Main app shell layout with navbar + content area
+   ========================================================================== */
+
+.layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-body);
+}
+
+.main-content {
+  flex: 1;
+  padding: 28px 32px;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  animation: fadeIn 0.35s ease;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    padding: 16px;
+  }
+}

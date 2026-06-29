@@ -1,0 +1,10 @@
+/* ==========================================================================
+   MANAGE REQUESTS STYLES — ManageRequests.css
+   Used by: src/pages/ManageRequests.jsx
+   Contains: Page-specific styles (mostly shares request-card styles
+             with MyRequests.css via global classes)
+   ========================================================================== */
+
+.manage-requests-page {
+  animation: fadeIn 0.35s ease;
+}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { LOCATIONS } from '../data/mock_data';
-//import './Auth.css';
+import './Auth.css';
 
 function Signup() {
 	const [name, setName] = useState('');

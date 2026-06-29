@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TIME_SLOTS } from '../data/mock_data';
 import authService from '../services/authService';
 import { useAuth } from '../contexts/AuthContext';
-//import './BookingModal.css';
+import './BookingModal.css';
 
 function RequestModal({ room, bookedSlots = [], onClose, onRequest }) {
   const { user } = useAuth();
@@ -20,8 +20,8 @@ function RequestModal({ room, bookedSlots = [], onClose, onRequest }) {
     setError('');
 
     if (!timeSlot) {
-      setError('Please select a time slot');
-      return;
+    	setError('Please select a time slot');
+      	return;
     }
     if (!title.trim()) {
       setError('Please enter a meeting title');

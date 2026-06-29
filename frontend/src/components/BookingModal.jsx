@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TIME_SLOTS } from '../data/mock_data';
-//import './BookingModal.css';
+import './BookingModal.css';
 
 function BookingModal({ room, bookedSlots = [], onClose, onBook }) {
 	const [date, setDate] = useState(new Date().toISOString().split('T')[0]);

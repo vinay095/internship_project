@@ -1,0 +1,38 @@
+/* ==========================================================================
+   ROOMS PAGE STYLES — Rooms.css
+   Used by: src/pages/Rooms.jsx
+   Contains: Rooms page layout, rooms grid, location selector
+   ========================================================================== */
+
+.rooms-page {
+  animation: fadeIn 0.35s ease;
+}
+
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 18px;
+}
+
+/* Location dropdown selector */
+.location-select {
+  padding: 8px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.location-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.location-select option {
+  background: var(--bg-card);
+  color: var(--text-primary);
+}

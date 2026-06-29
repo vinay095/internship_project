@@ -2,7 +2,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { roomService } from '../services/roomService';
 import { bookingService } from '../services/bookingService';
 import { requestService } from '../services/requestService';
-//import './Dashboard.css';
+import './Dashboard.css';
 
 function Dashboard() {
 	const { user, hasRole } = useAuth();
