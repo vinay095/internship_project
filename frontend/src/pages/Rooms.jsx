@@ -99,7 +99,6 @@ function Rooms() {
 		{bookingRoom && (
 			<BookingModal
 			room={bookingRoom}
-			bookedRanges={bookingService.getBookedRanges(bookingRoom.id, today)}
 			onClose={() => setBookingRoom(null)}
 			onBook={handleBook}
 			/>
@@ -108,7 +107,6 @@ function Rooms() {
 		{requestRoom && (
 			<RequestModal
 			room={requestRoom}
-			bookedRanges={bookingService.getBookedRanges(requestRoom.id, today)}
 			onClose={() => setRequestRoom(null)}
 			onRequest={handleRequest}
 			/>

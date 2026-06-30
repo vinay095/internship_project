@@ -56,7 +56,7 @@ function NotFound() {
 				<span ref={handleRef} className="nf-handle" />
 			</div>
 
-			<Link to="/dashboard" className="nf-back-link">← Back to Login</Link>
+			<Link to="/dashboard" className="nf-back-link">← Let's head Back</Link>
 
 			<button
 				className="nf-replay"
