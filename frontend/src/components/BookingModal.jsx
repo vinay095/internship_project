@@ -5,13 +5,18 @@ import './BookingModal.css';
 // Old: imported fixed TIME_SLOTS from mock_data, rendered a flat grid of slot buttons.
 // New: dynamic start/end time pickers with 15-minute intervals over a 24-hour cycle.
 
-function BookingModal({ room, bookedRanges = [], onClose, onBook }) {
+function BookingModal({ room, onClose, onBook }) {
 	const [date, setDate] = useState(bookingService.getLocalDateString());
 	const [startTime, setStartTime] = useState('09:00');
 	const [endTime, setEndTime] = useState('10:00');
 	const [title, setTitle] = useState('');
 	const [attendees, setAttendees] = useState('');
 	const [error, setError] = useState('');
+
+	// Dynamically fetch bookings matching the currently selected date
+	const bookedRanges = useMemo(() => {
+		return bookingService.getBookedRanges(room.id, date);
+	}, [room.id, date]);
 
 	const timeOptions = useMemo(() => bookingService.generateTimeOptions(), []);
 

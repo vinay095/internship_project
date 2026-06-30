@@ -7,7 +7,7 @@ import './BookingModal.css';
 // Old: imported TIME_SLOTS and rendered slot-grid buttons.
 // New: dynamic start/end time pickers.
 
-function RequestModal({ room, bookedRanges = [], onClose, onRequest }) {
+function RequestModal({ room, onClose, onRequest }) {
 	const { user } = useAuth();
 	const [date, setDate] = useState(bookingService.getLocalDateString());
 	const [startTime, setStartTime] = useState('09:00');
@@ -16,6 +16,11 @@ function RequestModal({ room, bookedRanges = [], onClose, onRequest }) {
 	const [note, setNote] = useState('');
 	const [managerId, setManagerId] = useState(user?.reportingManagerId || '');
 	const [error, setError] = useState('');
+
+	// Dynamically fetch bookings matching the currently selected date
+	const bookedRanges = useMemo(() => {
+		return bookingService.getBookedRanges(room.id, date);
+	}, [room.id, date]);
 
 	const managers = authService.getManagers();
 	const timeOptions = useMemo(() => bookingService.generateTimeOptions(), []);
