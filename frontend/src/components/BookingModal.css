@@ -142,6 +142,57 @@
   opacity: 0.6;
 }
 
+/* Old slot grid is replaced by start/end time pickers but kept for reference */
 @media (max-width: 480px) {
   .slot-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ----- Duration Badge ----- */
+.duration-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  border-radius: 20px;
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.duration-badge.duration-conflict {
+  background: var(--color-danger-bg);
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ----- Already Booked Ranges List ----- */
+.booked-ranges-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.booked-range-tag {
+  padding: 3px 10px;
+  background: var(--color-danger-bg);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 20px;
+  color: var(--color-danger);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ----- Two column form row ----- */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 480px) {
+  .form-row { grid-template-columns: 1fr; }
 }

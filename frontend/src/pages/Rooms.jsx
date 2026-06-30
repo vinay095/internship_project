@@ -11,6 +11,8 @@ import './Rooms.css';
 
 function Rooms() {
 	const { user, hasRole } = useAuth();
+	// HR can browse all locations; employees and managers are locked to their own
+	const isHR = hasRole('hr');
 	const [selectedLocation, setSelectedLocation] = useState(user.location);
 	const [bookingRoom, setBookingRoom] = useState(null);
 	const [requestRoom, setRequestRoom] = useState(null);
@@ -18,12 +20,12 @@ function Rooms() {
 	const [, forceUpdate] = useState(0);
 
 	const rooms = roomService.getRooms(selectedLocation);
-	const today = new Date().toISOString().split('T')[0];
+	const today = bookingService.getLocalDateString();
 	const canBook = hasRole('manager');
 
 	const handleBook = (data) => {
 		try {
-			bookingService.createBooking({...data,bookedBy: user.id});
+			bookingService.createBooking({ ...data, bookedBy: user.id });
 			setBookingRoom(null);
 			setMessage('Room booked successfully!');
 			forceUpdate((n) => n + 1);
@@ -35,7 +37,7 @@ function Rooms() {
 
 	const handleRequest = (data) => {
 		try {
-			requestService.createRequest({...data, requestedBy: user.id,});
+			requestService.createRequest({ ...data, requestedBy: user.id });
 			setRequestRoom(null);
 			setMessage('Booking request sent to your manager!');
 			forceUpdate((n) => n + 1);
@@ -50,15 +52,21 @@ function Rooms() {
 		<div className="page-header">
 			<h1>Meeting Rooms</h1>
 			<div className="page-actions">
-			<select
-				value={selectedLocation}
-				onChange={(e) => setSelectedLocation(e.target.value)}
-				className="location-select"
-			>
-				{LOCATIONS.map((loc) => (
-				<option key={loc} value={loc}>{loc}</option>
-				))}
-			</select>
+				{isHR ? (
+					/* HR can switch between all locations */
+					<select
+						value={selectedLocation}
+						onChange={(e) => setSelectedLocation(e.target.value)}
+						className="location-select"
+					>
+						{LOCATIONS.map((loc) => (
+							<option key={loc} value={loc}>{loc}</option>
+						))}
+					</select>
+				) : (
+					/* Employees and Managers are locked to their own location */
+					<span className="location-badge">{user.location}</span>
+				)}
 			</div>
 		</div>
 
@@ -66,12 +74,14 @@ function Rooms() {
 
 		<div className="rooms-grid">
 			{rooms.map((room) => {
-			const bookedSlots = bookingService.getBookedSlots(room.id, today);
+			// Updated: getBookedRanges returns [{startTime, endTime, title}] for the timeline
+			// Old: bookingService.getBookedSlots(room.id, today) returned string[]
+			const bookedRanges = bookingService.getBookedRanges(room.id, today);
 			return (
 				<RoomCard
 				key={room.id}
 				room={room}
-				bookedSlots={bookedSlots}
+				bookedRanges={bookedRanges}
 				canBook={canBook}
 				onBook={setBookingRoom}
 				onRequest={setRequestRoom}
@@ -89,15 +99,19 @@ function Rooms() {
 		{bookingRoom && (
 			<BookingModal
 			room={bookingRoom}
-			bookedSlots={bookingService.getBookedSlots(bookingRoom.id, today)}
+			bookedRanges={bookingService.getBookedRanges(bookingRoom.id, today)}
 			onClose={() => setBookingRoom(null)}
 			onBook={handleBook}
 			/>
 		)}
 
 		{requestRoom && (
-			<RequestModal room={requestRoom} bookedSlots={bookingService.getBookedSlots(requestRoom.id, today)}
-				onClose={() => setRequestRoom(null)} onRequest={handleRequest} />
+			<RequestModal
+			room={requestRoom}
+			bookedRanges={bookingService.getBookedRanges(requestRoom.id, today)}
+			onClose={() => setRequestRoom(null)}
+			onRequest={handleRequest}
+			/>
 		)}
 		</div>
 	);

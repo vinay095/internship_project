@@ -19,6 +19,8 @@ import Bookings from './pages/Booking';
 import MyRequests from './pages/MyRequests';
 import ManageRequests from './pages/ManageRequests';
 import ManageRooms from './pages/ManageRooms';
+import Reports from './pages/Reports';
+import NotFound from './pages/NotFound';
 
 function App() {
 	return (
@@ -30,14 +32,7 @@ function App() {
 					<Route path="/signup" element={<Signup />} />
 
 					{/* Protected Routes */}
-					<Route
-						path="/"
-						element={
-							<ProtectedRoute>
-								<Layout />
-							</ProtectedRoute>
-						}
-					>
+						<Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
 						<Route index element={<Navigate to="/dashboard" replace />} />
 						<Route path="dashboard" element={<Dashboard />} />
 						<Route path="rooms" element={<Rooms />} />
@@ -72,10 +67,20 @@ function App() {
 								</ProtectedRoute>
 							}
 						/>
+
+						{/* Manager and HR */}
+						<Route
+							path="reports"
+							element={
+								<ProtectedRoute allowedRoles={['manager']}>
+									<Reports />
+								</ProtectedRoute>
+							}
+						/>
 					</Route>
 
-					{/* Catch-all */}
-					<Route path="*" element={<Navigate to="/login" replace />} />
+					{/* Catch-all — show animated 404 page */}
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</BrowserRouter>
 		</AuthProvider>

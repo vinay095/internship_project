@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import './Navbar.css';
 
@@ -14,23 +14,24 @@ function Navbar() {
 	return (
 		<nav className="navbar">
 		<div className="navbar-left">
-			<Link to="/dashboard" className="navbar-brand">
-			MeetingRoom
-			</Link>
+			<NavLink to="/dashboard" className="navbar-brand">MeetingRoom</NavLink>
 		</div>
 
 		<div className="navbar-center">
-			<Link to="/dashboard" className="nav-link">Dashboard</Link>
-			<Link to="/rooms" className="nav-link">Rooms</Link>
-			<Link to="/bookings" className="nav-link">Bookings</Link>
+			<NavLink to="/dashboard" className="nav-link">Dashboard</NavLink>
+			<NavLink to="/rooms" className="nav-link">Rooms</NavLink>
+			<NavLink to="/bookings" className="nav-link">Bookings</NavLink>
 			{user?.role === 'employee' && (
-				<Link to="/my-requests" className="nav-link">My Requests</Link>
+				<NavLink to="/my-requests" className="nav-link">My Requests</NavLink>
 			)}
 			{hasRole('manager') && (
-				<Link to="/manage-requests" className="nav-link">Requests</Link>
+				<NavLink to="/manage-requests" className="nav-link">Requests</NavLink>
 			)}
 			{hasRole('hr') && (
-				<Link to="/manage-rooms" className="nav-link">Manage Rooms</Link>
+				<NavLink to="/manage-rooms" className="nav-link">Manage Rooms</NavLink>
+			)}
+			{hasRole('manager') && (
+				<NavLink to="/reports" className="nav-link">Reports</NavLink>
 			)}
 		</div>
 

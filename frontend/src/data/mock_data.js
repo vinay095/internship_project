@@ -3,13 +3,10 @@
 
 export const LOCATIONS = ['Noida', 'Hyderabad', 'Kolkata']
 
-export const TIME_SLOTS = ['9 AM - 10 AM', '10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM']
+// REMOVED: Fixed 1-hour TIME_SLOTS replaced by dynamic startTime/endTime per booking.
+// The old slot grid buttons are replaced with 15-minute interval time pickers.
+// export const TIME_SLOTS = ['9 AM - 10 AM', '10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM']
 
-//export let USERS = {
-//	{id: "user1", name: "Vinay"},
-
-//	{id: "user2", name: "Akash"}
-//}
 export let users = [
 	{ id: 'u1', name: 'Priya Sharma', email: 'priya@arrise.com', password: 'password123', role: 'hr', location: 'Noida', reportingManagerId: null },
 	{ id: 'u2', name: 'Rahul Verma', email: 'rahul@arrise.com', password: 'password123', role: 'manager', location: 'Noida', reportingManagerId: 'u1' },
@@ -24,49 +21,43 @@ export let rooms = [
 	{ id: 'r5', name: 'Godavari', location: 'Kolkata', capacity: 8, amenities: ['TV Screen', 'Whiteboard'], isActive: true }
 ];
 
-const today = new Date().toISOString().split('T')[0];
+const getLocalDateString = (d = new Date()) => {
+	const offsetMs = d.getTimezoneOffset() * 60 * 1000;
+	return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
+};
+const today = getLocalDateString();
 
-// BUG FIX: original booking had roomId: 'room1' (no such room) and timeSlot in 24h format (doesn't match TIME_SLOTS)
-// export let bookings = [
-// 	{
-// 		id: 'book1',
-// 		roomId: 'room1',
-// 		bookedBy: 'u2',
-// 		date: today,
-// 		timeSlot: '10:00 - 11:00',
-// 		title: 'Sprint Planning',
-// 		attendees: ['u3', 'u2'],
-// 		createdAt: new Date().toISOString(),
-// 	},
-// ];
+// BUG FIX (original): booking had roomId: 'room1' (no such room) and timeSlot in 24h format.
+// BUG FIX (v2): migrated from timeSlot string to startTime + endTime for dynamic slot support.
+// Old format: { timeSlot: '10 AM - 11 AM' }
+// New format: { startTime: '10:00', endTime: '11:00' }
 export let bookings = [
 	{
 		id: 'book1',
 		roomId: 'r1',
 		bookedBy: 'u2',
 		date: today,
-		timeSlot: '10 AM - 11 AM',
+		startTime: '10:00',
+		endTime: '11:00',
 		title: 'Sprint Planning',
-		attendees: ['u3', 'u2'],
+		attendees: ['vinay@arrise.com'],
+		createdAt: new Date().toISOString(),
+	},
+	{
+		id: 'book2',
+		roomId: 'r4',
+		bookedBy: 'u2',
+		date: today,
+		startTime: '14:00',
+		endTime: '14:45',
+		title: 'Quick Sync',
+		attendees: [],
 		createdAt: new Date().toISOString(),
 	},
 ];
 
-// BUG FIX: original request had requestedBy: 'u4' (no such user) and timeSlot in 24h format
-// export let requests = [
-// 	{
-// 		id: 'req1',
-// 		requestedBy: 'u4',
-// 		managerId: 'u2',
-// 		roomId: 'r1',
-// 		date: today,
-// 		timeSlot: '15:00 - 16:00',
-// 		title: 'Team Sync',
-// 		note: 'Need room for quick team sync',
-// 		status: 'pending',
-// 		createdAt: new Date().toISOString(),
-// 	},
-// ];
+// BUG FIX (original): request had requestedBy: 'u4' (no such user) and timeSlot in 24h format.
+// BUG FIX (v2): migrated from timeSlot string to startTime + endTime.
 export let requests = [
 	{
 		id: 'req1',
@@ -74,7 +65,8 @@ export let requests = [
 		managerId: 'u2',
 		roomId: 'r1',
 		date: today,
-		timeSlot: '3 PM - 4 PM',
+		startTime: '15:00',
+		endTime: '16:00',
 		title: 'Team Sync',
 		note: 'Need room for quick team sync',
 		status: 'pending', // pending | approved | rejected

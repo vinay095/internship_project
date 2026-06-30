@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { requestService } from '../services/requestService';
 import { roomService } from '../services/roomService';
 import { authService } from '../services/authService';
+import { bookingService } from '../services/bookingService';
 import './MyRequests.css';
 
 function MyRequests() {
@@ -46,7 +47,11 @@ function MyRequests() {
 						<div className="request-details">
 						<span> {room?.name} ({room?.location})</span>
 						<span> {req.date}</span>
-						<span> {req.timeSlot}</span>
+						<span>
+							{req.startTime && req.endTime
+								? `${bookingService.formatTime(req.startTime)} – ${bookingService.formatTime(req.endTime)}`
+								: req.timeSlot || '—'}
+						</span>
 						<span> Requested to: {manager?.name || 'Unknown'}</span>
 						</div>
 						{req.note && (

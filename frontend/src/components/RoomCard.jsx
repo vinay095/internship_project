@@ -1,6 +1,11 @@
+import RoomTimeline from './RoomTimeline';
+import { bookingService } from '../services/bookingService';
 import './RoomCard.css';
 
-function RoomCard({ room, bookedSlots = [], onBook, onRequest, canBook }) {
+// Old prop: bookedSlots (string array of TIME_SLOTS)
+// New prop: bookedRanges ({startTime, endTime, title}[]) for dynamic slot support
+
+function RoomCard({ room, bookedRanges = [], onBook, onRequest, canBook }) {
   return (
     <div className={`room-card ${!room.isActive ? 'room-inactive' : ''}`}>
       <div className="room-card-header">
@@ -21,11 +26,17 @@ function RoomCard({ room, bookedSlots = [], onBook, onRequest, canBook }) {
         ))}
       </div>
 
-      {bookedSlots.length > 0 && (
+      {/* 24-hour visual timeline showing today's booked ranges */}
+      <RoomTimeline bookedRanges={bookedRanges} canBook={canBook} />
+
+      {/* Compact booked time labels below the timeline */}
+      {bookedRanges.length > 0 && (
         <div className="room-booked-slots">
           <span className="booked-label">Booked today:</span>
-          {bookedSlots.map((slot) => (
-            <span key={slot} className="booked-slot">{slot}</span>
+          {bookedRanges.map((r, i) => (
+            <span key={i} className="booked-slot">
+              {bookingService.formatTime(r.startTime)}–{bookingService.formatTime(r.endTime)}
+            </span>
           ))}
         </div>
       )}

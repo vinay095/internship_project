@@ -7,7 +7,7 @@ import './Dashboard.css';
 function Dashboard() {
 	const { user, hasRole } = useAuth();
 
-	const today = new Date().toISOString().split('T')[0];
+	const today = bookingService.getLocalDateString();
 	const rooms = roomService.getRooms(user.location);
 	const todayBookings = bookingService.getBookings({ date: today });
 	const myBookings = bookingService.getBookings({ bookedBy: user.id, date: today });
@@ -65,7 +65,11 @@ function Dashboard() {
 					const room = roomService.getRoomById(b.roomId);
 					return (
 						<div key={b.id} className="booking-item-simple">
-						<div className="booking-time">{b.timeSlot}</div>
+						<div className="booking-time">
+							{b.startTime && b.endTime
+								? `${bookingService.formatTime(b.startTime)} – ${bookingService.formatTime(b.endTime)}`
+								: b.timeSlot || '—'}
+						</div>
 						<div className="booking-info">
 							<strong>{b.title}</strong>
 							<span>{room?.name} · {room?.location}</span>

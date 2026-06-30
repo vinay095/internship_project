@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { bookingService } from '../services/bookingService';
 import './BookingModal.css';
 
 function InviteModal({ booking, onClose, onSend }) {
@@ -30,6 +31,11 @@ function InviteModal({ booking, onClose, onSend }) {
 		setEmails('');
 	};
 
+	// Format time range — handles both old timeSlot strings and new startTime/endTime fields
+	const timeDisplay = booking.startTime && booking.endTime
+		? `${bookingService.formatTime(booking.startTime)} – ${bookingService.formatTime(booking.endTime)}`
+		: booking.timeSlot || '';
+
 	return (
 		<div className="modal-overlay" onClick={onClose}>
 		<div className="modal" onClick={(e) => e.stopPropagation()}>
@@ -44,7 +50,7 @@ function InviteModal({ booking, onClose, onSend }) {
 				Meeting: <strong>{booking.title}</strong>
 				</p>
 				<p style={{ margin: 0, fontSize: 13, color: '#606770' }}>
-				{booking.date} · {booking.timeSlot}
+				{booking.date} · {timeDisplay}
 				</p>
 			</div>
 

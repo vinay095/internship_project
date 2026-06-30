@@ -38,6 +38,12 @@ function Bookings() {
 		}
 	};
 
+	// Download an .ics calendar file for the booking — 100% frontend, no backend needed
+	const handleAddToCalendar = (booking) => {
+		const room = roomService.getRoomById(booking.roomId);
+		bookingService.downloadICS(booking, room);
+	};
+
 	return (
 		<div className="bookings-page">
 		<div className="page-header">
@@ -67,51 +73,72 @@ function Bookings() {
 					const booker = authService.getUserById(b.bookedBy);
 					const isOwner = b.bookedBy === user.id;
 
+					// Format time — supports both new startTime/endTime and old timeSlot string
+					const timeDisplay = b.startTime && b.endTime
+						? `${bookingService.formatTime(b.startTime)} – ${bookingService.formatTime(b.endTime)}`
+						: b.timeSlot || '—';
+
+					const duration = b.startTime && b.endTime
+						? bookingService.getDurationLabel(b.startTime, b.endTime)
+						: null;
+
 					return (
-						<tr key={b.id}>
-							<td>{b.date}</td>
-							<td><span className="booking-time">{b.timeSlot}</span></td>
-							<td>
-							<strong>{room?.name}</strong>
-							<br />
-							<span className="text-muted">{room?.location}</span>
-							</td>
-							<td>{b.title}</td>
-							<td>
-							<span className="booker-name">{booker?.name || 'Unknown'}</span>
-							<br />
-							<span className="text-muted">{booker?.role}</span>
-							</td>
-							<td>
-							{b.attendees.length > 0 ? (
-								<span className="attendee-count">
-								{b.attendees.length} attendee(s)
-								</span>
-							) : (
-								<span className="text-muted">None</span>
+					<tr key={b.id}>
+						<td>{b.date}</td>
+						<td>
+						<span className="booking-time">{timeDisplay}</span>
+						{duration && <span className="booking-duration">{duration}</span>}
+						</td>
+						<td>
+						<strong>{room?.name}</strong>
+						<br />
+						<span className="text-muted">{room?.location}</span>
+						</td>
+						<td>{b.title}</td>
+						<td>
+						<span className="booker-name">{booker?.name || 'Unknown'}</span>
+						<br />
+						<span className="text-muted">{booker?.role}</span>
+						</td>
+						<td>
+						{b.attendees.length > 0 ? (
+							<span className="attendee-count">
+							{b.attendees.length} attendee(s)
+							</span>
+						) : (
+							<span className="text-muted">None</span>
+						)}
+						</td>
+						<td>
+						<div className="action-btns">
+							{/* "Add to Calendar" available for all bookings the user can see */}
+							<button
+							className="btn btn-small btn-ics"
+							onClick={() => handleAddToCalendar(b)}
+							title="Download .ics calendar invite"
+							>
+							Calendar
+							</button>
+
+							{isOwner && (
+							<>
+								<button
+								className="btn btn-small btn-primary"
+								onClick={() => setInviteBooking(b)}
+								>
+								Invite
+								</button>
+								<button
+								className="btn btn-small btn-danger"
+								onClick={() => handleCancel(b.id)}
+								>
+								Cancel
+								</button>
+							</>
 							)}
-							</td>
-							<td>
-							<div className="action-btns">
-								{isOwner && (
-								<>
-									<button
-										className="btn btn-small btn-primary"
-										onClick={() => setInviteBooking(b)}
-									>
-										Invite
-									</button>
-									<button
-										className="btn btn-small btn-danger"
-										onClick={() => handleCancel(b.id)}
-									>
-									Cancel
-									</button>
-								</>
-								)}
-							</div>
-							</td>
-						</tr>
+						</div>
+						</td>
+					</tr>
 					);
 				})}
 				</tbody>

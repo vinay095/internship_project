@@ -36,3 +36,15 @@
   background: var(--bg-card);
   color: var(--text-primary);
 }
+
+/* Location badge shown to non-HR users (locked to their own location) */
+.location-badge {
+  padding: 7px 14px;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-sm);
+  color: var(--color-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
