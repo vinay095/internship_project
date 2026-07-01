@@ -46,7 +46,7 @@ function MyRequests() {
 								</div>
 								<div className="request-details">
 									<span> {room?.name} ({room?.location})</span>
-									<span> {req.date}</span>
+									<span> {bookingService.formatDateToDisplay(req.date)}</span>
 									<span>
 										{req.startTime && req.endTime
 											? `${bookingService.formatTime(req.startTime)} – ${bookingService.formatTime(req.endTime)}`

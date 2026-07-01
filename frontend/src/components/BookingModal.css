@@ -28,8 +28,6 @@
 	border-radius: var(--radius-lg);
 	width: 100%;
 	max-width: 520px;
-	max-height: 90vh;
-	overflow-y: auto;
 	box-shadow: var(--shadow-md), var(--shadow-glow);
 	animation: slideUp 0.25s ease;
 }
@@ -87,6 +85,8 @@
 /* ----- Body ----- */
 .modal-body {
 	padding: 22px;
+	max-height: calc(90vh - 64px);
+	overflow-y: auto;
 }
 
 /* ----- Footer Actions ----- */

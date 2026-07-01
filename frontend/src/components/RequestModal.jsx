@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import authService from '../services/authService';
 import { useAuth } from '../contexts/AuthContext';
 import { bookingService } from '../services/bookingService';
+import MiniCalendar from './MiniCalendar';
 import './BookingModal.css';
 
 // Old: imported TIME_SLOTS and rendered slot-grid buttons.
@@ -88,13 +89,13 @@ function RequestModal({ room, onClose, onRequest }) {
 						</select>
 					</div>
 
+					{/* Date */}
 					<div className="form-group">
 						<label>Date</label>
-						<input
-							type="date"
+						<MiniCalendar
 							value={date}
-							min={bookingService.getLocalDateString()}
-							onChange={(e) => setDate(e.target.value)}
+							onChange={setDate}
+							minDate={bookingService.getLocalDateString()}
 						/>
 					</div>
 

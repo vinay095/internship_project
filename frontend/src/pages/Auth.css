@@ -10,7 +10,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: var(--bg-body);
+	background: transparent;
 	padding: 16px;
 	animation: fadeIn 0.5s ease;
 }

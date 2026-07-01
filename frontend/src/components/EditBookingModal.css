@@ -200,3 +200,58 @@
 	color: var(--color-primary);
 	line-height: 1.5;
 }
+
+.time-input-group {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--bg-input);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-sm);
+	padding: 4px 8px;
+	gap: 6px;
+	width: 100%;
+	height: 42px;
+	transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.time-input-group:focus-within {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.time-input-group .time-num-input {
+	width: 40px !important;
+	height: auto !important;
+	border: none !important;
+	background: transparent !important;
+	color: var(--text-primary) !important;
+	padding: 0 !important;
+	font-size: 14px !important;
+	text-align: center !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.time-separator {
+	color: var(--text-secondary);
+	font-weight: bold;
+}
+
+.time-ampm-btn {
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+	border: 1px solid rgba(124, 58, 237, 0.2);
+	border-radius: 4px;
+	padding: 4px 10px;
+	font-size: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all var(--transition);
+}
+
+.time-ampm-btn:hover {
+	background: var(--color-primary);
+	color: #fff;
+	border-color: var(--color-primary);
+}

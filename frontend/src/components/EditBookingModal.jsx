@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react';
 import { bookingService } from '../services/bookingService';
 import { roomService } from '../services/roomService';
 import { useAuth } from '../contexts/AuthContext';
+import MiniCalendar from './MiniCalendar';
 import './BookingModal.css';
 import './EditBookingModal.css';
 import { HugeiconsIcon } from '@hugeicons/react';
@@ -39,25 +40,179 @@ function EditBookingModal({ booking, onClose, onSave }) {
 	const [successMsg, setSuccessMsg] = useState('');
 
 	// Recurring meeting state 
-	const [isRecurring, setIsRecurring] = useState(false);		// default: False
-	const [recurDays, setRecurDays] = useState([]);           // selected weekday numbers
-	const [recurEndDate, setRecurEndDate] = useState('');           // YYYY-MM-DD
+	const [isRecurring, setIsRecurring] = useState(booking.isRecurring || false);		// default: False
+	const [recurDays, setRecurDays] = useState(booking.recurDays || []);           // selected weekday numbers
+	const [recurEndDate, setRecurEndDate] = useState(booking.recurEndDate || '');           // YYYY-MM-DD
+
+	// Time conversion helper functions
+	const parse24To12 = (time24) => {
+		if (!time24) return { hour12: '09', minute: '00', period: 'AM' };
+		const [hStr, mStr] = time24.split(':');
+		const h = parseInt(hStr, 10);
+		const period = h >= 12 ? 'PM' : 'AM';
+		const hour12Val = h % 12 || 12;
+		return {
+			hour12: String(hour12Val).padStart(2, '0'),
+			minute: mStr || '00',
+			period
+		};
+	};
+
+	const format12To24 = (hour12, minute, period) => {
+		let h = parseInt(hour12, 10);
+		if (isNaN(h)) h = 12;
+		if (h < 1) h = 1;
+		if (h > 12) h = 12;
+
+		if (period === 'PM' && h < 12) {
+			h += 12;
+		} else if (period === 'AM' && h === 12) {
+			h = 0;
+		}
+
+		let m = parseInt(minute, 10);
+		if (isNaN(m)) m = 0;
+		if (m < 0) m = 0;
+		if (m > 59) m = 59;
+
+		const hStr = String(h).padStart(2, '0');
+		const mStr = String(m).padStart(2, '0');
+		return `${hStr}:${mStr}`;
+	};
+
+	// Initialize local 12h states from 24h props
+	const initStart = useMemo(() => parse24To12(booking.startTime), [booking.startTime]);
+	const [startHr, setStartHr] = useState(initStart.hour12);
+	const [startMin, setStartMin] = useState(initStart.minute);
+	const [startPeriod, setStartPeriod] = useState(initStart.period);
+
+	const initEnd = useMemo(() => parse24To12(booking.endTime), [booking.endTime]);
+	const [endHr, setEndHr] = useState(initEnd.hour12);
+	const [endMin, setEndMin] = useState(initEnd.minute);
+	const [endPeriod, setEndPeriod] = useState(initEnd.period);
 
 	// Time options 
 	const timeOptions = useMemo(() => bookingService.generateTimeOptions(), []);
 
-	const endTimeOptions = useMemo(
-		() => timeOptions.filter((t) => t > startTime),
-		[timeOptions, startTime]
-	);
+	const handleStartHrChange = (val) => {
+		const clean = val.replace(/\D/g, '').slice(0, 2);
+		setStartHr(clean);
+		
+		const hVal = parseInt(clean, 10);
+		if (!isNaN(hVal) && hVal >= 1 && hVal <= 12) {
+			const newStart = format12To24(clean, startMin, startPeriod);
+			setStartTime(newStart);
+			if (endTime <= newStart) {
+				const idx = timeOptions.indexOf(newStart);
+				const fallbackEnd = timeOptions[idx + 1] || '23:45';
+				setEndTime(fallbackEnd);
+				const end12 = parse24To12(fallbackEnd);
+				setEndHr(end12.hour12);
+				setEndMin(end12.minute);
+				setEndPeriod(end12.period);
+			}
+		}
+	};
 
-	const handleStartTimeChange = (e) => {
-		const newStart = e.target.value;
+	const handleStartMinChange = (val) => {
+		const clean = val.replace(/\D/g, '').slice(0, 2);
+		setStartMin(clean);
+
+		const mVal = parseInt(clean, 10);
+		if (!isNaN(mVal) && mVal >= 0 && mVal <= 59) {
+			const newStart = format12To24(startHr, clean, startPeriod);
+			setStartTime(newStart);
+			if (endTime <= newStart) {
+				const idx = timeOptions.indexOf(newStart);
+				const fallbackEnd = timeOptions[idx + 1] || '23:45';
+				setEndTime(fallbackEnd);
+				const end12 = parse24To12(fallbackEnd);
+				setEndHr(end12.hour12);
+				setEndMin(end12.minute);
+				setEndPeriod(end12.period);
+			}
+		}
+	};
+
+	const toggleStartPeriod = () => {
+		const newPeriod = startPeriod === 'AM' ? 'PM' : 'AM';
+		setStartPeriod(newPeriod);
+		const newStart = format12To24(startHr, startMin, newPeriod);
 		setStartTime(newStart);
 		if (endTime <= newStart) {
 			const idx = timeOptions.indexOf(newStart);
-			setEndTime(timeOptions[idx + 1] || '23:45');
+			const fallbackEnd = timeOptions[idx + 1] || '23:45';
+			setEndTime(fallbackEnd);
+			const end12 = parse24To12(fallbackEnd);
+			setEndHr(end12.hour12);
+			setEndMin(end12.minute);
+			setEndPeriod(end12.period);
 		}
+	};
+
+	const handleEndHrChange = (val) => {
+		const clean = val.replace(/\D/g, '').slice(0, 2);
+		setEndHr(clean);
+
+		const hVal = parseInt(clean, 10);
+		if (!isNaN(hVal) && hVal >= 1 && hVal <= 12) {
+			const newEnd = format12To24(clean, endMin, endPeriod);
+			setEndTime(newEnd);
+		}
+	};
+
+	const handleEndMinChange = (val) => {
+		const clean = val.replace(/\D/g, '').slice(0, 2);
+		setEndMin(clean);
+
+		const mVal = parseInt(clean, 10);
+		if (!isNaN(mVal) && mVal >= 0 && mVal <= 59) {
+			const newEnd = format12To24(endHr, clean, endPeriod);
+			setEndTime(newEnd);
+		}
+	};
+
+	const toggleEndPeriod = () => {
+		const newPeriod = endPeriod === 'AM' ? 'PM' : 'AM';
+		setEndPeriod(newPeriod);
+		const newEnd = format12To24(endHr, endMin, newPeriod);
+		setEndTime(newEnd);
+	};
+
+	const handleStartHrBlur = () => {
+		let h = parseInt(startHr, 10);
+		if (isNaN(h) || h < 1 || h > 12) h = 12;
+		const padded = String(h).padStart(2, '0');
+		setStartHr(padded);
+		const newStart = format12To24(padded, startMin, startPeriod);
+		setStartTime(newStart);
+	};
+
+	const handleStartMinBlur = () => {
+		let m = parseInt(startMin, 10);
+		if (isNaN(m) || m < 0 || m > 59) m = 0;
+		const padded = String(m).padStart(2, '0');
+		setStartMin(padded);
+		const newStart = format12To24(startHr, padded, startPeriod);
+		setStartTime(newStart);
+	};
+
+	const handleEndHrBlur = () => {
+		let h = parseInt(endHr, 10);
+		if (isNaN(h) || h < 1 || h > 12) h = 12;
+		const padded = String(h).padStart(2, '0');
+		setEndHr(padded);
+		const newEnd = format12To24(padded, endMin, endPeriod);
+		setEndTime(newEnd);
+	};
+
+	const handleEndMinBlur = () => {
+		let m = parseInt(endMin, 10);
+		if (isNaN(m) || m < 0 || m > 59) m = 0;
+		const padded = String(m).padStart(2, '0');
+		setEndMin(padded);
+		const newEnd = format12To24(endHr, padded, endPeriod);
+		setEndTime(newEnd);
 	};
 
 	const duration = bookingService.getDurationLabel(startTime, endTime);
@@ -121,7 +276,7 @@ function EditBookingModal({ booking, onClose, onSave }) {
 			.filter(Boolean);
 
 		try {
-			// 1. Update the original booking
+			// Update the booking, including recurrence info if set
 			bookingService.updateBooking(booking.id, {
 				roomId: selectedRoom,
 				date,
@@ -129,30 +284,13 @@ function EditBookingModal({ booking, onClose, onSave }) {
 				endTime,
 				title,
 				newAttendees: newAttendeeList,
+				isRecurring,
+				recurDays,
+				recurEndDate,
 			});
 
-			// 2. If recurring, generate all future occurrences
-			if (isRecurring) {
-				const { created, skipped } = bookingService.createRecurringBookings({
-					roomId: selectedRoom,
-					startDate: date,
-					endDate: recurEndDate,
-					recurDays,
-					startTime,
-					endTime,
-					title,
-					bookedBy: user.id,
-					attendees: [...(booking.attendees || []), ...newAttendeeList],
-					excludeId: booking.id,
-				});
-
-				const skippedNote = skipped > 0 ? ` (${skipped} date${skipped > 1 ? 's' : ''} skipped due to conflicts)` : '';
-				setSuccessMsg(`✓ ${created} recurring meeting${created !== 1 ? 's' : ''} created${skippedNote}.`);
-				// Delay close so user sees the count summary
-				setTimeout(() => onSave(), 2000);
-			} else {
-				onSave();
-			}
+			setSuccessMsg('✓ Meeting updated successfully.');
+			setTimeout(() => onSave(), 1000);
 		} catch (err) {
 			setError(err.message);
 		}
@@ -186,10 +324,9 @@ function EditBookingModal({ booking, onClose, onSave }) {
 					{/* Date */}
 					<div className="form-group">
 						<label>Date</label>
-						<input
-							type="date"
+						<MiniCalendar
 							value={date}
-							onChange={(e) => setDate(e.target.value)}
+							onChange={setDate}
 						/>
 					</div>
 
@@ -197,19 +334,65 @@ function EditBookingModal({ booking, onClose, onSave }) {
 					<div className="form-row">
 						<div className="form-group">
 							<label>Start Time</label>
-							<select value={startTime} onChange={handleStartTimeChange}>
-								{timeOptions.slice(0, -1).map((t) => (
-									<option key={t} value={t}>{bookingService.formatTime(t)}</option>
-								))}
-							</select>
+							<div className="time-input-group">
+								<input
+									type="text"
+									className="time-num-input"
+									value={startHr}
+									onChange={(e) => handleStartHrChange(e.target.value)}
+									onBlur={handleStartHrBlur}
+									placeholder="HH"
+									maxLength={2}
+								/>
+								<span className="time-separator">:</span>
+								<input
+									type="text"
+									className="time-num-input"
+									value={startMin}
+									onChange={(e) => handleStartMinChange(e.target.value)}
+									onBlur={handleStartMinBlur}
+									placeholder="MM"
+									maxLength={2}
+								/>
+								<button
+									type="button"
+									className="time-ampm-btn"
+									onClick={toggleStartPeriod}
+								>
+									{startPeriod}
+								</button>
+							</div>
 						</div>
 						<div className="form-group">
 							<label>End Time</label>
-							<select value={endTime} onChange={(e) => setEndTime(e.target.value)}>
-								{endTimeOptions.map((t) => (
-									<option key={t} value={t}>{bookingService.formatTime(t)}</option>
-								))}
-							</select>
+							<div className="time-input-group">
+								<input
+									type="text"
+									className="time-num-input"
+									value={endHr}
+									onChange={(e) => handleEndHrChange(e.target.value)}
+									onBlur={handleEndHrBlur}
+									placeholder="HH"
+									maxLength={2}
+								/>
+								<span className="time-separator">:</span>
+								<input
+									type="text"
+									className="time-num-input"
+									value={endMin}
+									onChange={(e) => handleEndMinChange(e.target.value)}
+									onBlur={handleEndMinBlur}
+									placeholder="MM"
+									maxLength={2}
+								/>
+								<button
+									type="button"
+									className="time-ampm-btn"
+									onClick={toggleEndPeriod}
+								>
+									{endPeriod}
+								</button>
+							</div>
 						</div>
 					</div>
 
@@ -298,25 +481,25 @@ function EditBookingModal({ booking, onClose, onSave }) {
 								{/* End date picker */}
 								<div className="form-group" style={{ marginTop: 12 }}>
 									<label>Recurrence End Date</label>
-									<input
-										type="date"
+									<MiniCalendar
 										value={recurEndDate}
-										min={date}
-										onChange={(e) => setRecurEndDate(e.target.value)}
+										onChange={setRecurEndDate}
+										minDate={date}
+										dropUp
 									/>
 								</div>
 
 								{/* Summary preview */}
 								{recurDays.length > 0 && recurEndDate && (
 									<div className="ebm-recur-summary">
-										🗓 Repeats every&nbsp;
+										Repeats every&nbsp;
 										<strong>
 											{recurDays
 												.sort((a, b) => a - b)
 												.map((d) => WEEKDAYS.find((w) => w.value === d)?.label)
 												.join(', ')}
 										</strong>
-										&nbsp;until&nbsp;<strong>{recurEndDate}</strong>
+										&nbsp;until&nbsp;<strong>{bookingService.formatDateToDisplay(recurEndDate)}</strong>
 									</div>
 								)}
 							</div>

@@ -3,36 +3,36 @@ import { useAuth } from '../contexts/AuthContext';
 import { bookingService } from '../services/bookingService';
 import { roomService } from '../services/roomService';
 import { authService } from '../services/authService';
+import { useToast } from '../contexts/ToastContext';
 import EditBookingModal from '../components/EditBookingModal';
 import { HugeiconsIcon } from '@hugeicons/react'
-import { CalendarDownload01Icon, Delete02Icon, Edit04Icon,  } from '@hugeicons/core-free-icons'
+import { CalendarDownload01Icon, Delete02Icon, Edit04Icon, } from '@hugeicons/core-free-icons'
 
 import './Bookings.css';
 
 function Bookings() {
 	const { user } = useAuth();
+	const { showToast, showConfirm } = useToast();
 	const [editBooking, setEditBooking] = useState(null);
-	const [message, setMessage] = useState('');
 	const [, forceUpdate] = useState(0);
 
 	const bookings = bookingService.getBookings({});
 
 	const handleUpdate = () => {
 		setEditBooking(null);
-		setMessage('Booking updated successfully!');
+		showToast('Booking updated successfully!', 'success');
 		forceUpdate((n) => n + 1);
-		setTimeout(() => setMessage(''), 3000);
 	};
 
-	const handleCancel = (bookingId) => {
-		if (window.confirm('Are you sure you want to cancel this booking?')) {
+	const handleCancel = async (bookingId) => {
+		const ok = await showConfirm('Are you sure you want to cancel this booking?');
+		if (ok) {
 			try {
 				bookingService.cancelBooking(bookingId);
-				setMessage('Booking cancelled');
+				showToast('Booking cancelled', 'info');
 				forceUpdate((n) => n + 1);
-				setTimeout(() => setMessage(''), 3000);
 			} catch (err) {
-				alert(err.message);
+				showToast(err.message, 'error');
 			}
 		}
 	};
@@ -48,8 +48,6 @@ function Bookings() {
 			<div className="page-header">
 				<h1>All Bookings</h1>
 			</div>
-
-			{message && <div className="form-success" style={{ marginBottom: 16 }}>{message}</div>}
 
 			{bookings.length === 0 ? (
 				<div className="empty-state"><p>No bookings yet</p></div>) : (
@@ -83,7 +81,17 @@ function Bookings() {
 
 								return (
 									<tr key={b.id}>
-										<td>{b.date}</td>
+										<td>
+											{bookingService.formatDateToDisplay(b.date)}
+											{b.isRecurring && b.recurDays && (
+												<div className="recurring-badge">
+													↻ {['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+														.filter((_, i) => b.recurDays.includes(i))
+														.join(', ')}
+													{b.recurEndDate && <span className="recur-until"> until {bookingService.formatDateToDisplay(b.recurEndDate)}</span>}
+												</div>
+											)}
+										</td>
 										<td>
 											<span className="booking-time">{timeDisplay}</span>
 											{duration && <span className="booking-duration">{duration}</span>}
@@ -117,7 +125,6 @@ function Bookings() {
 													title="Download .ics"
 												>
 													<HugeiconsIcon icon={CalendarDownload01Icon} />
-													
 												</button>
 
 												{isOwner && (
@@ -135,7 +142,6 @@ function Bookings() {
 															title="Cancel Meeting"
 														>
 															<HugeiconsIcon icon={Delete02Icon} />
-																
 														</button>
 													</>
 												)}

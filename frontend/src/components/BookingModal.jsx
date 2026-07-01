@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { bookingService } from '../services/bookingService';
+import MiniCalendar from './MiniCalendar';
 import './BookingModal.css';
 
 // Old: imported fixed TIME_SLOTS from mock_data, rendered a flat grid of slot buttons.
@@ -75,13 +76,13 @@ function BookingModal({ room, onClose, onBook }) {
 				<form onSubmit={handleSubmit} className="modal-body">
 					{error && <div className="form-error">{error}</div>}
 
+					{/* Date */}
 					<div className="form-group">
 						<label>Date</label>
-						<input
-							type="date"
+						<MiniCalendar
 							value={date}
-							min={bookingService.getLocalDateString()}
-							onChange={(e) => setDate(e.target.value)}
+							onChange={setDate}
+							minDate={bookingService.getLocalDateString()}
 						/>
 					</div>
 

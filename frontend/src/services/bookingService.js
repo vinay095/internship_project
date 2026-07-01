@@ -12,6 +12,23 @@ export const getLocalDateString = (d = new Date()) => {
 };
 
 /**
+ * Format YYYY-MM-DD date string to DD-MM-YYYY for user display.
+ */
+export const formatDateToDisplay = (dateStr) => {
+	if (!dateStr) return '';
+	const parts = dateStr.split('-');
+	if (parts.length !== 3) return dateStr;
+	const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+	const day = parts[2];
+	const monthIdx = parseInt(parts[1], 10) - 1;
+	const year = parts[0];
+	if (monthIdx >= 0 && monthIdx < 12) {
+		return `${day}-${months[monthIdx]}-${year}`;
+	}
+	return dateStr;
+};
+
+/**
  * Convert "HH:MM" to total minutes since midnight.
  * e.g. "10:30" → 630
  */
@@ -204,16 +221,14 @@ export const bookingService = {
 	 * @param {string}   excludeId    - Booking ID to ignore in conflict check (the original booking)
 	 */
 
-	
 	createRecurringBookings: ({ roomId, startDate, endDate, recurDays, startTime, endTime, title, bookedBy, attendees, excludeId }) => {
 		if (!recurDays || recurDays.length === 0) throw new Error('Select at least one weekday for recurrence.');
 		if (endDate < startDate) throw new Error('Recurrence end date must be on or after the start date.');
 
-		let created = 0;
-		const skippedDates = [];
-
+		// Conflict check: scan every matching weekday in the range for this room
 		const cursor = new Date(startDate + 'T00:00:00');
 		const end = new Date(endDate + 'T00:00:00');
+		const conflictDates = [];
 
 		while (cursor <= end) {
 			const dayOfWeek = cursor.getDay();
@@ -223,40 +238,40 @@ export const bookingService = {
 				const conflict = bookings.find((b) =>
 					b.id !== excludeId &&
 					b.roomId === roomId &&
-					b.date === dateStr &&
-					b.startTime && b.endTime &&
-					timesOverlap(startTime, endTime, b.startTime, b.endTime)
+					// for other recurring bookings, we check if that weekday overlaps
+					(b.isRecurring
+						? b.recurDays?.includes(dayOfWeek) &&
+						  b.date <= dateStr && b.recurEndDate >= dateStr &&
+						  timesOverlap(startTime, endTime, b.startTime, b.endTime)
+						: b.date === dateStr && b.startTime && b.endTime &&
+						  timesOverlap(startTime, endTime, b.startTime, b.endTime))
 				);
-
-				if (conflict) {
-					skippedDates.push(dateStr);
-				} else {
-					bookings.push({
-						id: generateId('b'),
-						roomId,
-						bookedBy,
-						date: dateStr,
-						startTime,
-						endTime,
-						title,
-						attendees: attendees ? [...attendees] : [],
-						isRecurring: true,
-						createdAt: new Date().toISOString(),
-					});
-					created++;
-				}
+				if (conflict) conflictDates.push(dateStr);
 			}
 			cursor.setDate(cursor.getDate() + 1);
 		}
 
-		return { created, skipped: skippedDates.length, skippedDates };
+		// Create a SINGLE booking record with recurrence metadata
+		const newBooking = {
+			id: generateId('b'),
+			roomId,
+			bookedBy,
+			date: startDate,          // first occurrence date
+			startTime,
+			endTime,
+			title: title || 'Meeting',
+			attendees: attendees ? [...attendees] : [],
+			isRecurring: true,
+			recurDays,               // e.g. [1, 3, 5] = Mon, Wed, Fri
+			recurEndDate: endDate,   // last occurrence date
+			createdAt: new Date().toISOString(),
+		};
+		bookings.push(newBooking);
+
+		return { booking: newBooking, conflictDates };
 	},
 
-	/**
-	 * Update an existing booking's room, date, time window, title, and/or attendees.
-	 * Conflict check excludes the booking being edited (so its own slot is not a false clash).
-	 */
-	updateBooking: (id, { roomId, date, startTime, endTime, title, newAttendees = [] }) => {
+	updateBooking: (id, { roomId, date, startTime, endTime, title, newAttendees = [], isRecurring, recurDays, recurEndDate }) => {
 		const index = bookings.findIndex((b) => b.id === id);
 		if (index === -1) throw new Error('Booking not found');
 
@@ -293,6 +308,10 @@ export const bookingService = {
 			endTime,
 			title: title.trim() || bookings[index].title,
 			attendees: [...existing, ...sanitized],
+			// Persist recurrence metadata if provided
+			isRecurring: isRecurring ?? bookings[index].isRecurring ?? false,
+			recurDays: isRecurring ? (recurDays ?? bookings[index].recurDays) : undefined,
+			recurEndDate: isRecurring ? (recurEndDate ?? bookings[index].recurEndDate) : undefined,
 			updatedAt: new Date().toISOString(),
 		};
 		return bookings[index];
@@ -351,6 +370,7 @@ export const bookingService = {
 	timeToMinutes,
 	minutesToTime,
 	getLocalDateString,
+	formatDateToDisplay,
 };
 
 export default bookingService;

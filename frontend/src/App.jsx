@@ -9,6 +9,7 @@
 
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+import { ToastProvider } from './contexts/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/layout/Layout.jsx';
 import Login from './pages/Login';
@@ -24,8 +25,9 @@ import NotFound from './pages/NotFound';
 
 function App() {
 	return (
-		<AuthProvider>
-			<BrowserRouter>
+		<ToastProvider>
+			<AuthProvider>
+				<BrowserRouter>
 				<Routes>
 					{/* Public Routes */}
 					<Route path="/login" element={<Login />} />
@@ -82,8 +84,9 @@ function App() {
 					{/* Catch-all — show animated 404 page */}
 					<Route path="*" element={<NotFound />} />
 				</Routes>
-			</BrowserRouter>
-		</AuthProvider>
+				</BrowserRouter>
+			</AuthProvider>
+		</ToastProvider>
 	);
 }
 

@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { roomService } from '../services/roomService';
 import { bookingService } from '../services/bookingService';
 import { requestService } from '../services/requestService';
+import { useToast } from '../contexts/ToastContext';
 import { LOCATIONS } from '../data/mock_data';
 import RoomCard from '../components/RoomCard';
 import BookingModal from '../components/BookingModal';
@@ -11,12 +12,12 @@ import './Rooms.css';
 
 function Rooms() {
 	const { user, hasRole } = useAuth();
+	const { showToast } = useToast();
 	// admin can browse all locations; employees and managers are locked to their own
 	const isAdmin = hasRole('admin');
 	const [selectedLocation, setSelectedLocation] = useState(user.location);
 	const [bookingRoom, setBookingRoom] = useState(null);
 	const [requestRoom, setRequestRoom] = useState(null);
-	const [message, setMessage] = useState('');
 	const [, forceUpdate] = useState(0);
 
 	const rooms = roomService.getRooms(selectedLocation);
@@ -27,11 +28,10 @@ function Rooms() {
 		try {
 			bookingService.createBooking({ ...data, bookedBy: user.id });
 			setBookingRoom(null);
-			setMessage('Room booked successfully!');
+			showToast('Room booked successfully!', 'success');
 			forceUpdate((n) => n + 1);
-			setTimeout(() => setMessage(''), 3000);
 		} catch (err) {
-			alert(err.message);
+			showToast(err.message, 'error');
 		}
 	};
 
@@ -39,11 +39,10 @@ function Rooms() {
 		try {
 			requestService.createRequest({ ...data, requestedBy: user.id });
 			setRequestRoom(null);
-			setMessage('Booking request sent to your manager!');
+			showToast('Booking request sent to your manager!', 'success');
 			forceUpdate((n) => n + 1);
-			setTimeout(() => setMessage(''), 3000);
 		} catch (err) {
-			alert(err.message);
+			showToast(err.message, 'error');
 		}
 	};
 
@@ -69,8 +68,6 @@ function Rooms() {
 					)}
 				</div>
 			</div>
-
-			{message && <div className="form-success" style={{ marginBottom: 16 }}>{message}</div>}
 
 			<div className="rooms-grid">
 				{rooms.map((room) => {

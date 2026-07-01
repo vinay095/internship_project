@@ -4,12 +4,12 @@ import { requestService } from '../services/requestService';
 import { roomService } from '../services/roomService';
 import { authService } from '../services/authService';
 import { bookingService } from '../services/bookingService';
+import { useToast } from '../contexts/ToastContext';
 import './ManageRequests.css';
 
 function ManageRequests() {
 	const { user } = useAuth();
-	const [message, setMessage] = useState('');
-	const [error, setError] = useState('');
+	const { showToast, showConfirm } = useToast();
 	const [showAll, setShowAll] = useState(false);
 	const [, forceUpdate] = useState(0);
 
@@ -18,27 +18,22 @@ function ManageRequests() {
 	const handleApprove = (requestId) => {
 		try {
 			requestService.approveRequest(requestId, user.id);
-			setMessage('Request approved and room booked!');
-			setError('');
+			showToast('Request approved and room booked!', 'success');
 			forceUpdate((n) => n + 1);
-			setTimeout(() => setMessage(''), 3000);
 		} catch (err) {
-			setError(err.message);
-			setMessage('');
+			showToast(err.message, 'error');
 		}
 	};
 
-	const handleReject = (requestId) => {
-		if (window.confirm('Are you sure you want to reject this request?')) {
+	const handleReject = async (requestId) => {
+		const ok = await showConfirm('Are you sure you want to reject this request?');
+		if (ok) {
 			try {
 				requestService.rejectRequest(requestId, user.id);
-				setMessage('Request rejected');
-				setError('');
+				showToast('Request rejected', 'info');
 				forceUpdate((n) => n + 1);
-				setTimeout(() => setMessage(''), 3000);
 			} catch (err) {
-				setError(err.message);
-				setMessage('');
+				showToast(err.message, 'error');
 			}
 		}
 	};
@@ -65,9 +60,6 @@ function ManageRequests() {
 				</div>
 			</div>
 
-			{message && <div className="form-success" style={{ marginBottom: 16 }}>{message}</div>}
-			{error && <div className="form-error" style={{ marginBottom: 16 }}>{error}</div>}
-
 			{requests.length === 0 ? (
 				<div className="empty-state">
 					<p>No {showAll ? '' : 'pending '}requests from your team.</p>
@@ -93,7 +85,7 @@ function ManageRequests() {
 								</div>
 								<div className="request-details">
 									<span> {room?.name} ({room?.location})</span>
-									<span> {req.date}</span>
+									<span> {bookingService.formatDateToDisplay(req.date)}</span>
 									<span>
 										{req.startTime && req.endTime
 											? `${bookingService.formatTime(req.startTime)} – ${bookingService.formatTime(req.endTime)}`
