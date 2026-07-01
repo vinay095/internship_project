@@ -6,135 +6,139 @@
    ========================================================================== */
 
 .navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  height: 60px;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  backdrop-filter: blur(12px);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 24px;
+	height: 60px;
+	background: var(--bg-surface);
+	border-bottom: 1px solid var(--border-color);
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	backdrop-filter: blur(12px);
 }
 
 .navbar-left {
-  flex-shrink: 0;
+	flex-shrink: 0;
 }
 
 .navbar-brand {
-  font-size: 20px;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-decoration: none;
-  letter-spacing: -0.5px;
+	font-size: 20px;
+	font-weight: 800;
+	background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	text-decoration: none;
+	letter-spacing: -0.5px;
 }
 
 .navbar-center {
-  display: flex;
-  gap: 4px;
-  align-items: center;
+	display: flex;
+	gap: 4px;
+	align-items: center;
 }
 
 .nav-link {
-  padding: 8px 16px;
-  color: var(--text-secondary);
-  font-size: 13px;
-  font-weight: 500;
-  text-decoration: none;
-  border-radius: var(--radius-sm);
-  transition: all var(--transition);
+	padding: 8px 16px;
+	color: var(--text-secondary);
+	font-size: 13px;
+	font-weight: 500;
+	text-decoration: none;
+	border-radius: var(--radius-sm);
+	transition: all var(--transition);
 }
 
 .nav-link:hover {
-  color: var(--text-primary);
-  background: rgba(124, 58, 237, 0.1);
-  text-decoration: none;
+	color: var(--text-primary);
+	background: rgba(124, 58, 237, 0.1);
+	text-decoration: none;
 }
 
 .nav-link.active {
-  color: var(--color-primary);
-  background: var(--color-primary-light);
+	color: var(--color-primary);
+	background: var(--color-primary-light);
 }
 
 .navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex-shrink: 0;
 }
 
 .user-info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 
 .user-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
-  color: var(--text-on-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  flex-shrink: 0;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+	color: var(--text-on-primary);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 14px;
+	font-weight: 700;
+	flex-shrink: 0;
 }
 
 .user-details {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.3;
+	display: flex;
+	flex-direction: column;
+	line-height: 1.3;
 }
 
 .user-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--text-primary);
 }
 
 .user-role {
-  font-size: 11px;
-  color: var(--text-muted);
-  text-transform: capitalize;
+	font-size: 11px;
+	color: var(--text-muted);
+	text-transform: capitalize;
 }
 
 .btn-logout {
-  padding: 6px 14px;
-  background: rgba(239, 68, 68, 0.1);
-  color: var(--color-danger);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  border-radius: var(--radius-sm);
-  font-size: 12px;
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all var(--transition);
+	padding: 6px 14px;
+	background: rgba(239, 68, 68, 0.1);
+	color: var(--color-danger);
+	border: 1px solid rgba(239, 68, 68, 0.2);
+	border-radius: var(--radius-sm);
+	font-size: 12px;
+	font-weight: 600;
+	font-family: inherit;
+	cursor: pointer;
+	transition: all var(--transition);
 }
 
 .btn-logout:hover {
-  background: rgba(239, 68, 68, 0.2);
+	background: rgba(239, 68, 68, 0.2);
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    flex-wrap: wrap;
-    height: auto;
-    padding: 10px 16px;
-    gap: 8px;
-  }
-  .navbar-center {
-    order: 3;
-    width: 100%;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-  .user-details { display: none; }
+	.navbar {
+		flex-wrap: wrap;
+		height: auto;
+		padding: 10px 16px;
+		gap: 8px;
+	}
+
+	.navbar-center {
+		order: 3;
+		width: 100%;
+		overflow-x: auto;
+		padding-bottom: 4px;
+	}
+
+	.user-details {
+		display: none;
+	}
 }

@@ -8,13 +8,13 @@ export const LOCATIONS = ['Noida', 'Hyderabad', 'Kolkata']
 // export const TIME_SLOTS = ['9 AM - 10 AM', '10 AM - 11 AM', '11 AM - 12 PM', '12 PM - 1 PM', '1 PM - 2 PM', '2 PM - 3 PM', '3 PM - 4 PM', '4 PM - 5 PM']
 
 export let users = [
-	{ id: 'u1', name: 'Priya Sharma', email: 'priya@arrise.com', password: 'password123', role: 'hr', location: 'Noida', reportingManagerId: null },
+	{ id: 'u1', name: 'Priya Sharma', email: 'priya@arrise.com', password: 'password123', role: 'admin', location: 'Noida', reportingManagerId: null },
 	{ id: 'u2', name: 'Rahul Verma', email: 'rahul@arrise.com', password: 'password123', role: 'manager', location: 'Noida', reportingManagerId: 'u1' },
 	{ id: "u3", name: "Vinay", email: "vinay@arrise.com", password: "password123", role: "employee", location: "Noida", reportingManagerId: "u2" }
 ];
 
 export let rooms = [
-	{ id: 'r1', name: 'Brahamputra', location: 'Noida', capacity: 16, amenities: ['TV Screen', 'Whiteboard', 'Video Conferencing'], isActive: true },
+	{ id: 'r1', name: 'Brahmaputra', location: 'Noida', capacity: 16, amenities: ['TV Screen', 'Whiteboard', 'Video Conferencing'], isActive: true },
 	{ id: 'r2', name: 'Himalaya', location: 'Hyderabad', capacity: 6, amenities: ['TV Screen'], isActive: true },
 	{ id: 'r3', name: 'Aravalli', location: 'Kolkata', capacity: 12, amenities: ['Whiteboard', 'Projector'], isActive: true },
 	{ id: 'r4', name: 'Ganga', location: 'Noida', capacity: 8, amenities: ['TV Screen', 'Whiteboard'], isActive: true },

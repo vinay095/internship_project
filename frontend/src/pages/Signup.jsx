@@ -58,98 +58,98 @@ function Signup() {
 
 	return (
 		<div className="auth-page">
-		<div className="auth-container">
-			<div className="auth-header">
-			<h1>MeetingRoom</h1>
-			<p>Create your account</p>
+			<div className="auth-container">
+				<div className="auth-header">
+					<h1>MeetingRoom</h1>
+					<p>Create your account</p>
+				</div>
+
+				<div className="auth-card">
+					<form onSubmit={handleSubmit}>
+						{error && <div className="form-error">{error}</div>}
+
+						<div className="form-group">
+							<input
+								type="text"
+								placeholder="Full Name"
+								value={name}
+								onChange={(e) => setName(e.target.value)}
+								required
+							/>
+						</div>
+
+						<div className="form-group">
+							<input
+								type="email"
+								placeholder="Email address"
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								required
+							/>
+						</div>
+
+						<div className="form-group">
+							<select
+								value={location}
+								onChange={(e) => setLocation(e.target.value)}
+								required
+							>
+								<option value="">Select Location</option>
+								{LOCATIONS.map((loc) => (
+									<option key={loc} value={loc}>{loc}</option>
+								))}
+							</select>
+						</div>
+
+						<div className="form-group">
+							<input
+								type="password"
+								placeholder="Password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								required
+							/>
+						</div>
+
+						<div className="form-group">
+							<input
+								type="password"
+								placeholder="Confirm Password"
+								value={confirmPassword}
+								onChange={(e) => setConfirmPassword(e.target.value)}
+								required
+							/>
+						</div>
+
+						<button
+							type="submit"
+							className="btn btn-primary btn-full"
+							disabled={loading}
+						>
+							{loading ? 'Creating Account...' : 'Sign Up'}
+						</button>
+					</form>
+
+					<div className="auth-divider">
+						<span>or</span>
+					</div>
+
+					<button
+						className="btn btn-sso btn-full"
+						onClick={handleSSO}
+						disabled={loading}
+					>
+						Sign in with Organization SSO
+					</button>
+
+					<div className="auth-footer">
+						<p>
+							Already have an account?{' '}
+							<Link to="/login">Log In</Link>
+						</p>
+					</div>
+				</div>
 			</div>
-
-			<div className="auth-card">
-			<form onSubmit={handleSubmit}>
-				{error && <div className="form-error">{error}</div>}
-
-				<div className="form-group">
-				<input
-					type="text"
-					placeholder="Full Name"
-					value={name}
-					onChange={(e) => setName(e.target.value)}
-					required
-				/>
-				</div>
-
-				<div className="form-group">
-				<input
-					type="email"
-					placeholder="Email address"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					required
-				/>
-				</div>
-
-				<div className="form-group">
-				<select
-					value={location}
-					onChange={(e) => setLocation(e.target.value)}
-					required
-				>
-					<option value="">Select Location</option>
-					{LOCATIONS.map((loc) => (
-					<option key={loc} value={loc}>{loc}</option>
-					))}
-				</select>
-				</div>
-
-				<div className="form-group">
-				<input
-					type="password"
-					placeholder="Password"
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
-					required
-				/>
-				</div>
-
-				<div className="form-group">
-				<input
-					type="password"
-					placeholder="Confirm Password"
-					value={confirmPassword}
-					onChange={(e) => setConfirmPassword(e.target.value)}
-					required
-				/>
-				</div>
-
-				<button
-				type="submit"
-				className="btn btn-primary btn-full"
-				disabled={loading}
-				>
-				{loading ? 'Creating Account...' : 'Sign Up'}
-				</button>
-			</form>
-
-			<div className="auth-divider">
-				<span>or</span>
-			</div>
-
-			<button
-				className="btn btn-sso btn-full"
-				onClick={handleSSO}
-				disabled={loading}
-			>
-				Sign in with Organization SSO
-			</button>
-
-			<div className="auth-footer">
-				<p>
-				Already have an account?{' '}
-				<Link to="/login">Log In</Link>
-				</p>
-			</div>
-			</div>
-		</div>
 		</div>
 	);
 }

@@ -52,13 +52,13 @@ export function AuthProvider({ children }) {
 	const hasRole = (role) => {
 		if (!user) return false;
 		if (role === 'employee') return true; // all roles include employee permissions
-		if (role === 'manager') return user.role === 'manager' || user.role === 'hr';
-		if (role === 'hr') return user.role === 'hr';
+		if (role === 'manager') return user.role === 'manager' || user.role === 'admin';
+		if (role === 'admin') return user.role === 'admin';
 		return false;
 	};
 
 	const value = {
-		user, loading, login, signup, ssoLogin, logout, isAuthenticated,hasRole,
+		user, loading, login, signup, ssoLogin, logout, isAuthenticated, hasRole,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

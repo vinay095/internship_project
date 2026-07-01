@@ -32,7 +32,7 @@ function App() {
 					<Route path="/signup" element={<Signup />} />
 
 					{/* Protected Routes */}
-						<Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
+					<Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
 						<Route index element={<Navigate to="/dashboard" replace />} />
 						<Route path="dashboard" element={<Dashboard />} />
 						<Route path="rooms" element={<Rooms />} />
@@ -48,7 +48,7 @@ function App() {
 							}
 						/>
 
-						{/* Manager and HR */}
+						{/* Manager and admin */}
 						<Route
 							path="manage-requests"
 							element={
@@ -58,17 +58,17 @@ function App() {
 							}
 						/>
 
-						{/* HR only */}
+						{/* admin only */}
 						<Route
 							path="manage-rooms"
 							element={
-								<ProtectedRoute allowedRoles={['hr']}>
+								<ProtectedRoute allowedRoles={['admin']}>
 									<ManageRooms />
 								</ProtectedRoute>
 							}
 						/>
 
-						{/* Manager and HR */}
+						{/* Manager and admin */}
 						<Route
 							path="reports"
 							element={

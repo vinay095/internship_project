@@ -4,7 +4,7 @@ export const roomService = {
 	getRooms: (location = null) => {
 		let result = rooms.filter((r) => r.isActive);	// get all active rooms
 		if (location) {
-		result = result.filter((r) => r.location === location);
+			result = result.filter((r) => r.location === location);
 		}
 		return result;
 	},
@@ -26,7 +26,7 @@ export const roomService = {
 	},
 
 	updateRoom: (id, updates) => {	// upadte is change in room properties like roomId, amenities, etc
-		const index = rooms.findIndex((r) => r.id === id);	
+		const index = rooms.findIndex((r) => r.id === id);
 		if (index === -1) throw new Error('Room not found');
 		rooms[index] = { ...rooms[index], ...updates };	// update the room properties
 		return rooms[index];

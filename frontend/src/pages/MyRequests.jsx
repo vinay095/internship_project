@@ -22,46 +22,46 @@ function MyRequests() {
 
 	return (
 		<div className="my-requests-page">
-		<div className="page-header">
-			<h1>My Booking Requests</h1>
-		</div>
-
-		{requests.length === 0 ? (
-			<div className="empty-state">
-			<p>You haven't made any booking requests yet. Go to <strong>Rooms</strong> to request a booking.</p>
+			<div className="page-header">
+				<h1>My Booking Requests</h1>
 			</div>
+
+			{requests.length === 0 ? (
+				<div className="empty-state">
+					<p>You haven't made any booking requests yet. Go to <strong>Rooms</strong> to request a booking.</p>
+				</div>
 			) : (
 				<div className="requests-list">
-				{requests.map((req) => {
-					const room = roomService.getRoomById(req.roomId);
-					const manager = authService.getUserById(req.managerId);
+					{requests.map((req) => {
+						const room = roomService.getRoomById(req.roomId);
+						const manager = authService.getUserById(req.managerId);
 
-					return (
-					<div key={req.id} className="request-card">
-						<div className="request-card-header">
-						<h3>{req.title}</h3>
-						<span className={`request-status ${getStatusClass(req.status)}`}>
-							{req.status}
-						</span>
-						</div>
-						<div className="request-details">
-						<span> {room?.name} ({room?.location})</span>
-						<span> {req.date}</span>
-						<span>
-							{req.startTime && req.endTime
-								? `${bookingService.formatTime(req.startTime)} – ${bookingService.formatTime(req.endTime)}`
-								: req.timeSlot || '—'}
-						</span>
-						<span> Requested to: {manager?.name || 'Unknown'}</span>
-						</div>
-						{req.note && (
-						<p className="request-note">Note: {req.note}</p>
-						)}
-					</div>
-					);
-				})}
-			</div>
-		)}
+						return (
+							<div key={req.id} className="request-card">
+								<div className="request-card-header">
+									<h3>{req.title}</h3>
+									<span className={`request-status ${getStatusClass(req.status)}`}>
+										{req.status}
+									</span>
+								</div>
+								<div className="request-details">
+									<span> {room?.name} ({room?.location})</span>
+									<span> {req.date}</span>
+									<span>
+										{req.startTime && req.endTime
+											? `${bookingService.formatTime(req.startTime)} – ${bookingService.formatTime(req.endTime)}`
+											: req.timeSlot || '—'}
+									</span>
+									<span> Requested to: {manager?.name || 'Unknown'}</span>
+								</div>
+								{req.note && (
+									<p className="request-note">Note: {req.note}</p>
+								)}
+							</div>
+						);
+					})}
+				</div>
+			)}
 		</div>
 	);
 }

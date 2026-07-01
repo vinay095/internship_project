@@ -9,44 +9,44 @@
 
 /* ----- Overlay ----- */
 .modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--bg-overlay);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-  animation: fadeIn 0.2s ease;
-  backdrop-filter: blur(4px);
+	position: fixed;
+	inset: 0;
+	background: var(--bg-overlay);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+	padding: 16px;
+	animation: fadeIn 0.2s ease;
+	backdrop-filter: blur(4px);
 }
 
 /* ----- Modal Container ----- */
 .modal {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  width: 100%;
-  max-width: 520px;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: var(--shadow-md), var(--shadow-glow);
-  animation: slideUp 0.25s ease;
+	background: var(--bg-card);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-lg);
+	width: 100%;
+	max-width: 520px;
+	max-height: 90vh;
+	overflow-y: auto;
+	box-shadow: var(--shadow-md), var(--shadow-glow);
+	animation: slideUp 0.25s ease;
 }
 
 /* ----- Header ----- */
 .modal-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 22px;
-  border-bottom: 1px solid var(--border-color);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 22px;
+	border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h2 {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
+	font-size: 18px;
+	font-weight: 700;
+	color: var(--text-primary);
 }
 
 /* .modal-close {
@@ -64,135 +64,139 @@
   transition: all var(--transition);
 } */
 .modal-close {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(15, 23, 42, 0.05);
-  border: 1px solid var(--border-color);
-  border-radius: 50%;
-  color: var(--text-secondary);
-  font-size: 14px;
-  cursor: pointer;
-  transition: all var(--transition);
+	width: 30px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(15, 23, 42, 0.05);
+	border: 1px solid var(--border-color);
+	border-radius: 50%;
+	color: var(--text-secondary);
+	font-size: 14px;
+	cursor: pointer;
+	transition: all var(--transition);
 }
 
 .modal-close:hover {
-  background: rgba(239, 68, 68, 0.15);
-  color: var(--color-danger);
-  border-color: rgba(239, 68, 68, 0.3);
+	background: rgba(239, 68, 68, 0.15);
+	color: var(--color-danger);
+	border-color: rgba(239, 68, 68, 0.3);
 }
 
 /* ----- Body ----- */
 .modal-body {
-  padding: 22px;
+	padding: 22px;
 }
 
 /* ----- Footer Actions ----- */
 .modal-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  padding-top: 16px;
-  margin-top: 8px;
-  border-top: 1px solid var(--border-color-subtle);
+	display: flex;
+	gap: 10px;
+	justify-content: flex-end;
+	padding-top: 16px;
+	margin-top: 8px;
+	border-top: 1px solid var(--border-color-subtle);
 }
 
 /* ----- Time Slot Grid ----- */
 .slot-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 8px;
 }
 
 .slot-btn {
-  padding: 8px 6px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 12px;
-  font-family: inherit;
-  cursor: pointer;
-  transition: all var(--transition);
-  text-align: center;
+	padding: 8px 6px;
+	background: var(--bg-input);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-sm);
+	color: var(--text-secondary);
+	font-size: 12px;
+	font-family: inherit;
+	cursor: pointer;
+	transition: all var(--transition);
+	text-align: center;
 }
 
 .slot-btn:hover:not(:disabled) {
-  border-color: var(--color-primary);
-  color: var(--text-primary);
-  background: var(--color-primary-light);
+	border-color: var(--color-primary);
+	color: var(--text-primary);
+	background: var(--color-primary-light);
 }
 
 .slot-btn.selected {
-  background: var(--color-primary);
-  color: var(--text-on-primary);
-  border-color: var(--color-primary);
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+	background: var(--color-primary);
+	color: var(--text-on-primary);
+	border-color: var(--color-primary);
+	font-weight: 600;
+	box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
 }
 
 .slot-btn.booked {
-  background: var(--color-danger-bg);
-  color: var(--text-muted);
-  border-color: transparent;
-  cursor: not-allowed;
-  text-decoration: line-through;
-  opacity: 0.6;
+	background: var(--color-danger-bg);
+	color: var(--text-muted);
+	border-color: transparent;
+	cursor: not-allowed;
+	text-decoration: line-through;
+	opacity: 0.6;
 }
 
 /* Old slot grid is replaced by start/end time pickers but kept for reference */
 @media (max-width: 480px) {
-  .slot-grid { grid-template-columns: repeat(2, 1fr); }
+	.slot-grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
 }
 
 /* ----- Duration Badge ----- */
 .duration-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: var(--color-primary-light);
-  border: 1px solid var(--color-primary);
-  border-radius: 20px;
-  color: var(--color-primary);
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 12px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	background: var(--color-primary-light);
+	border: 1px solid var(--color-primary);
+	border-radius: 20px;
+	color: var(--color-primary);
+	font-size: 13px;
+	font-weight: 600;
+	margin-bottom: 12px;
 }
 
 .duration-badge.duration-conflict {
-  background: var(--color-danger-bg);
-  border-color: var(--color-danger);
-  color: var(--color-danger);
+	background: var(--color-danger-bg);
+	border-color: var(--color-danger);
+	color: var(--color-danger);
 }
 
 /* ----- Already Booked Ranges List ----- */
 .booked-ranges-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: 4px;
 }
 
 .booked-range-tag {
-  padding: 3px 10px;
-  background: var(--color-danger-bg);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: 20px;
-  color: var(--color-danger);
-  font-size: 12px;
-  font-weight: 500;
+	padding: 3px 10px;
+	background: var(--color-danger-bg);
+	border: 1px solid rgba(239, 68, 68, 0.3);
+	border-radius: 20px;
+	color: var(--color-danger);
+	font-size: 12px;
+	font-weight: 500;
 }
 
 /* ----- Two column form row ----- */
 .form-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
 }
 
 @media (max-width: 480px) {
-  .form-row { grid-template-columns: 1fr; }
+	.form-row {
+		grid-template-columns: 1fr;
+	}
 }

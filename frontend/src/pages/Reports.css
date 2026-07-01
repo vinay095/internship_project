@@ -5,170 +5,171 @@
    ========================================================================== */
 
 .reports-page {
-  animation: fadeIn 0.35s ease;
+	animation: fadeIn 0.35s ease;
 }
 
 .reports-section {
-  margin-bottom: 32px;
+	margin-bottom: 32px;
 }
 
 .reports-section-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 14px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border-color-subtle);
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--text-primary);
+	margin-bottom: 14px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid var(--border-color-subtle);
 }
 
 .report-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 20px;
+	background: var(--bg-card);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	padding: 20px;
 }
 
 .report-card-note {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-bottom: 16px;
+	font-size: 12px;
+	color: var(--text-muted);
+	margin-bottom: 16px;
 }
 
 .stat-sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 2px;
+	font-size: 11px;
+	color: var(--text-muted);
+	margin-top: 2px;
 }
 
 /* ─── Utilization Bars ─── */
 .utilization-list {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
 }
 
 .util-row {
-  display: grid;
-  grid-template-columns: 220px 1fr 120px;
-  align-items: center;
-  gap: 14px;
+	display: grid;
+	grid-template-columns: 220px 1fr 120px;
+	align-items: center;
+	gap: 14px;
 }
 
 .util-room-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 }
 
 .util-room-name {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--text-primary);
 }
 
 .util-room-location {
-  font-size: 11px;
-  color: var(--text-muted);
+	font-size: 11px;
+	color: var(--text-muted);
 }
 
 .util-bar-wrapper {
-  height: 10px;
-  background: var(--bg-input);
-  border-radius: 99px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
+	height: 10px;
+	background: var(--bg-input);
+	border-radius: 99px;
+	overflow: hidden;
+	border: 1px solid var(--border-color);
 }
 
 .util-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-  border-radius: 99px;
-  transition: width 0.4s ease;
-  min-width: 2px;
+	height: 100%;
+	background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+	border-radius: 99px;
+	transition: width 0.4s ease;
+	min-width: 2px;
 }
 
 .util-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 2px;
 }
 
 .util-pct {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--color-primary);
+	font-size: 14px;
+	font-weight: 700;
+	color: var(--color-primary);
 }
 
 .util-detail {
-  font-size: 11px;
-  color: var(--text-muted);
-  white-space: nowrap;
+	font-size: 11px;
+	color: var(--text-muted);
+	white-space: nowrap;
 }
 
 /* ─── Peak Hours Bar Chart ─── */
 .peak-chart {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 120px;
-  padding-top: 8px;
+	display: flex;
+	align-items: flex-end;
+	gap: 3px;
+	height: 120px;
+	padding-top: 8px;
 }
 
 .peak-bar-col {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  height: 100%;
-  gap: 4px;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-end;
+	height: 100%;
+	gap: 4px;
 }
 
 .peak-bar {
-  width: 100%;
-  background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
-  border-radius: 3px 3px 0 0;
-  transition: height 0.4s ease;
-  min-height: 2px;
+	width: 100%;
+	background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
+	border-radius: 3px 3px 0 0;
+	transition: height 0.4s ease;
+	min-height: 2px;
 }
 
 .peak-bar-empty {
-  background: var(--bg-input);
-  border: 1px solid var(--border-color);
+	background: var(--bg-input);
+	border: 1px solid var(--border-color);
 }
 
 .peak-hour-label {
-  font-size: 9px;
-  color: var(--text-muted);
-  white-space: nowrap;
+	font-size: 9px;
+	color: var(--text-muted);
+	white-space: nowrap;
 }
 
 /* ─── Mini bar (in table) ─── */
 .mini-bar-wrapper {
-  width: 60px;
-  height: 6px;
-  background: var(--bg-input);
-  border-radius: 99px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
+	width: 60px;
+	height: 6px;
+	background: var(--bg-input);
+	border-radius: 99px;
+	overflow: hidden;
+	border: 1px solid var(--border-color);
 }
 
 .mini-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-  border-radius: 99px;
-  min-width: 2px;
+	height: 100%;
+	background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+	border-radius: 99px;
+	min-width: 2px;
 }
 
 @media (max-width: 640px) {
-  .util-row {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
-  .util-meta {
-    align-items: flex-start;
-    flex-direction: row;
-    gap: 8px;
-  }
+	.util-row {
+		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+
+	.util-meta {
+		align-items: flex-start;
+		flex-direction: row;
+		gap: 8px;
+	}
 }

@@ -1,4 +1,5 @@
 import { bookings, generateId } from '../data/mock_data';
+import { roomService } from './roomService';
 
 // ─── Time utility helpers ──────────────────────────────────────────────────────
 
@@ -187,6 +188,75 @@ export const bookingService = {
 		if (index === -1) throw new Error('Booking not found');
 		const removed = bookings.splice(index, 1);
 		return removed[0];
+	},
+
+	/**
+	 * Update an existing booking's room, date, time window, title, and/or attendees.
+	 * Conflict check excludes the booking being edited (so its own slot is not a false clash).
+	 */
+	updateBooking: (id, { roomId, date, startTime, endTime, title, newAttendees = [] }) => {
+		const index = bookings.findIndex((b) => b.id === id);
+		if (index === -1) throw new Error('Booking not found');
+
+		// Validate time order
+		if (timeToMinutes(startTime) >= timeToMinutes(endTime)) {
+			throw new Error('End time must be after start time');
+		}
+
+		// Check for conflicts in the target room/date, skipping this booking itself
+		const conflict = bookings.find((b) =>
+			b.id !== id &&
+			b.roomId === roomId &&
+			b.date === date &&
+			b.startTime && b.endTime &&   // skip old-format bookings
+			timesOverlap(startTime, endTime, b.startTime, b.endTime)
+		);
+		if (conflict) {
+			throw new Error(
+				`Room already booked from ${formatTime(conflict.startTime)} to ${formatTime(conflict.endTime)} — "${conflict.title}"`
+			);
+		}
+
+		// Merge new attendees (no duplicates)
+		const existing = bookings[index].attendees || [];
+		const sanitized = newAttendees
+			.map((e) => e.trim())
+			.filter((e) => e && !existing.includes(e));
+
+		bookings[index] = {
+			...bookings[index],
+			roomId,
+			date,
+			startTime,
+			endTime,
+			title: title.trim() || bookings[index].title,
+			attendees: [...existing, ...sanitized],
+			updatedAt: new Date().toISOString(),
+		};
+		return bookings[index];
+	},
+
+	/**
+	 * Return all active rooms in a location with their availability status
+	 * for a given [startTime, endTime) window on a specific date.
+	 * excludeBookingId — the booking being edited, so it doesn't clash with itself.
+	 */
+	getRoomsStatus: (location, date, startTime, endTime, excludeBookingId = null) => {
+		const rooms = roomService.getRooms(location);
+		return rooms.map((room) => {
+			const conflict = bookings.find((b) =>
+				b.id !== excludeBookingId &&
+				b.roomId === room.id &&
+				b.date === date &&
+				b.startTime && b.endTime &&   // skip old-format bookings with no time range
+				timesOverlap(startTime, endTime, b.startTime, b.endTime)
+			);
+			return {
+				room,
+				isAvailable: !conflict,
+				conflictTitle: conflict ? conflict.title : null,
+			};
+		});
 	},
 
 	sendInvites: (bookingId, emails) => {

@@ -5,10 +5,10 @@ import './Layout.css';
 function Layout() {
 	return (
 		<div className="layout">
-		<Navbar />
-		<main className="main-content">
-			<Outlet />
-		</main>
+			<Navbar />
+			<main className="main-content">
+				<Outlet />
+			</main>
 		</div>
 	);
 }

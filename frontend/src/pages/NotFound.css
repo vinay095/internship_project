@@ -7,109 +7,126 @@
 
 /* ─── Full-page dark overlay ─── */
 .nf-page {
-  position: fixed;
-  inset: 0;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Roboto Mono', monospace;
-  overflow: hidden;
+	position: fixed;
+	inset: 0;
+	background: #000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: 'Roboto Mono', monospace;
+	overflow: hidden;
 }
 
 /* ─── Centered copy container (position: relative so handle can be absolute) ─── */
 .nf-copy {
-  position: relative;
-  text-align: center;
+	position: relative;
+	text-align: center;
 }
 
 /* ─── Text ─── */
 .nf-copy p {
-  color: #fff;
-  font-size: 24px;
-  letter-spacing: 0.2px;
-  margin: 0;
-  white-space: nowrap;
-  user-select: none;
+	color: #fff;
+	font-size: 24px;
+	letter-spacing: 0.2px;
+	margin: 0;
+	white-space: nowrap;
+	user-select: none;
 }
 
 /* ─── Individual characters — start invisible, animate to visible ─── */
 .nf-char {
-  display: inline-block;
-  opacity: 0;
-  animation: nfCharReveal forwards;
-  /* animationDelay & animationDuration set via inline style per char */
+	display: inline-block;
+	opacity: 0;
+	animation: nfCharReveal forwards;
+	/* animationDelay & animationDuration set via inline style per char */
 }
 
 @keyframes nfCharReveal {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
 }
 
 /* ─── Cursor handle ─── */
 .nf-handle {
-  display: block;
-  background: #ffe500;
-  width: 14px;
-  height: 30px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin-top: 1px;
+	display: block;
+	background: #ffe500;
+	width: 14px;
+	height: 30px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-top: 1px;
 }
 
 /* Blink phase — driven by JS setting animation directly */
 @keyframes nfBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+
+	0%,
+	100% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
 }
 
 /* Slide phase — uses CSS custom property --nf-slide-to set by JS */
 @keyframes nfSlide {
-  from { transform: translateX(0); }
-  to   { transform: translateX(var(--nf-slide-to, 220px)); }
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(var(--nf-slide-to, 220px));
+	}
 }
 
 /* ─── Back to Dashboard link ─── */
 .nf-back-link {
-  position: absolute;
-  bottom: 60px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #666;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 13px;
-  text-decoration: none;
-  letter-spacing: 0.5px;
-  transition: color 0.2s;
+	position: absolute;
+	bottom: 60px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: #666;
+	font-family: 'Roboto Mono', monospace;
+	font-size: 13px;
+	text-decoration: none;
+	letter-spacing: 0.5px;
+	transition: color 0.2s;
 }
 
 .nf-back-link:hover {
-  color: #ffe500;
+	color: #ffe500;
 }
 
 /* ─── Replay button (bottom-right, matches original) ─── */
 .nf-replay {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin: 15px;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin: 15px;
+	background: none;
+	border: none;
+	padding: 0;
+	cursor: pointer;
+	width: 20px;
+	height: 20px;
 }
 
 .nf-replay svg {
-  fill: #666;
-  width: 20px;
-  height: 20px;
-  display: block;
-  transition: fill 0.2s;
+	fill: #666;
+	width: 20px;
+	height: 20px;
+	display: block;
+	transition: fill 0.2s;
 }
 
 .nf-replay:hover svg {
-  fill: #888;
+	fill: #888;
 }
