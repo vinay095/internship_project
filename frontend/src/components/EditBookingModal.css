@@ -9,7 +9,7 @@
 	max-width: 640px;
 }
 
-/* ── Room selector list ──────────────────────────────────────────────────── */
+/* Room selector list */
 .ebm-room-list {
 	display: flex;
 	flex-direction: column;
@@ -36,14 +36,14 @@
 	background: var(--color-primary-light);
 }
 
-/* ── Selected state ── */
+/*  Selected state  */
 .ebm-room-selected {
 	border-color: var(--color-primary) !important;
 	background: var(--color-primary-light) !important;
 	box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.18);
 }
 
-/* ── Occupied room mutes it slightly ── */
+/*  Occupied room mutes it slightly  */
 .ebm-room-occupied {
 	opacity: 0.75;
 }
@@ -61,7 +61,7 @@
 	white-space: nowrap;
 }
 
-/* ── Availability badges ── */
+/*  Availability badges  */
 .ebm-room-badge {
 	font-size: 11px;
 	font-weight: 600;
@@ -83,4 +83,120 @@
 	background: var(--color-danger-bg);
 	color: var(--color-danger);
 	border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/*  Recurring Meeting Section */
+.ebm-recurring-section {
+	margin-bottom: 14px;
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+}
+
+.ebm-recurring-toggle {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 12px 14px;
+	background: var(--bg-input);
+	border: none;
+	cursor: pointer;
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 600;
+	color: var(--text-primary);
+	transition: background var(--transition);
+	text-align: left;
+}
+
+.ebm-recurring-toggle:hover {
+	background: var(--bg-card-hover);
+}
+
+.ebm-recurring-toggle.ebm-recurring-active {
+	background: rgba(124, 58, 237, 0.06);
+	color: var(--color-primary);
+}
+
+.ebm-recurring-icon {
+	font-size: 16px;
+}
+
+.ebm-toggle-pill {
+	margin-left: auto;
+	padding: 2px 10px;
+	border-radius: 20px;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+}
+
+.pill-on {
+	background: rgba(124, 58, 237, 0.15);
+	color: var(--color-primary);
+	border: 1px solid rgba(124, 58, 237, 0.3);
+}
+
+.pill-off {
+	background: var(--bg-body);
+	color: var(--text-muted);
+	border: 1px solid var(--border-color-subtle);
+}
+
+.ebm-recurring-body {
+	padding: 14px;
+	border-top: 1px solid var(--border-color-subtle);
+	background: var(--bg-card);
+}
+
+.ebm-weekday-label {
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--text-secondary);
+	margin-bottom: 8px;
+}
+
+.ebm-weekday-row {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	margin-bottom: 4px;
+}
+
+.ebm-day-pill {
+	padding: 6px 14px;
+	border-radius: 20px;
+	border: 1px solid var(--border-color);
+	background: var(--bg-input);
+	color: var(--text-secondary);
+	font-size: 13px;
+	font-weight: 600;
+	font-family: inherit;
+	cursor: pointer;
+	transition: all var(--transition);
+}
+
+.ebm-day-pill:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+	background: var(--color-primary-light);
+}
+
+.ebm-day-active {
+	background: var(--color-primary) !important;
+	color: #fff !important;
+	border-color: var(--color-primary) !important;
+	box-shadow: 0 2px 8px rgba(124, 58, 237, 0.3);
+}
+
+.ebm-recur-summary {
+	margin-top: 10px;
+	padding: 8px 12px;
+	background: rgba(124, 58, 237, 0.07);
+	border: 1px solid rgba(124, 58, 237, 0.2);
+	border-radius: var(--radius-sm);
+	font-size: 13px;
+	color: var(--color-primary);
+	line-height: 1.5;
 }

@@ -1,7 +1,7 @@
 import { bookings, generateId } from '../data/mock_data';
 import { roomService } from './roomService';
 
-// ─── Time utility helpers ──────────────────────────────────────────────────────
+//  Time utility helpers 
 
 /**
  * Get local date string in YYYY-MM-DD format (timezone-safe).
@@ -75,7 +75,7 @@ export const timesOverlap = (start1, end1, start2, end2) => {
 		timeToMinutes(start2) < timeToMinutes(end1);
 };
 
-// ─── ICS Calendar File Generator ─────────────────────────────────────────────
+//  ICS Calendar File Generator 
 
 /**
  * Generate and download a standard iCalendar (.ics) file for a booking.
@@ -126,7 +126,7 @@ export const downloadICS = (booking, room) => {
 	URL.revokeObjectURL(url);
 };
 
-// ─── Booking Service ──────────────────────────────────────────────────────────
+//  Booking Service 
 
 export const bookingService = {
 	getBookings: (filters = {}) => {
@@ -188,6 +188,68 @@ export const bookingService = {
 		if (index === -1) throw new Error('Booking not found');
 		const removed = bookings.splice(index, 1);
 		return removed[0];
+	},
+
+	/**
+	 *
+	 * @param {string}   roomId       - Room ID to book
+	 * @param {string}   startDate    - YYYY-MM-DD first occurrence
+	 * @param {string}   endDate      - YYYY-MM-DD last possible occurrence
+	 * @param {number[]} recurDays    - JS getDay() weekday numbers: 1=Mon,2=Tue,3=Wed,4=Thu,5=Fri
+	 * @param {string}   startTime    - HH:MM
+	 * @param {string}   endTime      - HH:MM
+	 * @param {string}   title        - Meeting title
+	 * @param {string}   bookedBy     - User ID of organiser
+	 * @param {string[]} attendees    - Attendee emails
+	 * @param {string}   excludeId    - Booking ID to ignore in conflict check (the original booking)
+	 */
+
+	
+	createRecurringBookings: ({ roomId, startDate, endDate, recurDays, startTime, endTime, title, bookedBy, attendees, excludeId }) => {
+		if (!recurDays || recurDays.length === 0) throw new Error('Select at least one weekday for recurrence.');
+		if (endDate < startDate) throw new Error('Recurrence end date must be on or after the start date.');
+
+		let created = 0;
+		const skippedDates = [];
+
+		const cursor = new Date(startDate + 'T00:00:00');
+		const end = new Date(endDate + 'T00:00:00');
+
+		while (cursor <= end) {
+			const dayOfWeek = cursor.getDay();
+			const dateStr = getLocalDateString(cursor);
+
+			if (recurDays.includes(dayOfWeek)) {
+				const conflict = bookings.find((b) =>
+					b.id !== excludeId &&
+					b.roomId === roomId &&
+					b.date === dateStr &&
+					b.startTime && b.endTime &&
+					timesOverlap(startTime, endTime, b.startTime, b.endTime)
+				);
+
+				if (conflict) {
+					skippedDates.push(dateStr);
+				} else {
+					bookings.push({
+						id: generateId('b'),
+						roomId,
+						bookedBy,
+						date: dateStr,
+						startTime,
+						endTime,
+						title,
+						attendees: attendees ? [...attendees] : [],
+						isRecurring: true,
+						createdAt: new Date().toISOString(),
+					});
+					created++;
+				}
+			}
+			cursor.setDate(cursor.getDate() + 1);
+		}
+
+		return { created, skipped: skippedDates.length, skippedDates };
 	},
 
 	/**
