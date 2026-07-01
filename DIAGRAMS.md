@@ -32,15 +32,15 @@ graph TD
     NavMenu --> |Role Gate check| RoleGate{User Role?}
     
     RoleGate --> |Employee| EmpRequest[My Requests Page: /my-requests]
-    RoleGate --> |Manager or HR| MgrRequests[Manage Requests Page: /manage-requests]
-    RoleGate --> |HR Only| ManageRooms[Manage Rooms Page: /manage-rooms]
-    RoleGate --> |Manager or HR| ReportsPage[Reports Page: /reports]
+    RoleGate --> |Manager or Admin| MgrRequests[Manage Requests Page: /manage-requests]
+    RoleGate --> |Admin Only| ManageRooms[Manage Rooms Page: /manage-rooms]
+    RoleGate --> |Manager or Admin| ReportsPage[Reports Page: /reports]
     
     %% Rooms Action Branching (Location restrictions)
     RoomsPage --> LocGate{User Role?}
     
     LocGate --> |Employee or Manager| LockedLoc[Location select disabled: badge displays user.location]
-    LocGate --> |HR Only| FreeLoc[Location dropdown active: switch Noida / Hyderabad / Kolkata]
+    LocGate --> |Admin Only| FreeLoc[Location dropdown active: switch Noida / Hyderabad / Kolkata]
     
     LockedLoc --> RenderCards[Render RoomCard list based on active location]
     FreeLoc --> RenderCards
@@ -51,7 +51,7 @@ graph TD
     ActionsGate --> |Employee| OpenRequestModal[Open RequestModal: selects manager, Date, Start/End 15m intervals]
     OpenRequestModal --> SubmitReq[Submit pending request to manager] --> EmpRequest
     
-    ActionsGate --> |Manager or HR| OpenBookingModal[Open BookingModal: selects Date, Start/End 15m intervals]
+    ActionsGate --> |Manager or Admin| OpenBookingModal[Open BookingModal: selects Date, Start/End 15m intervals]
     OpenBookingModal --> SubmitBook[Directly book room] --> BookingsPage
     
     %% Bookings Actions
